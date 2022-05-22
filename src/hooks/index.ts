@@ -13,9 +13,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	domain = DOMAIN || request.headers.get('host')
 	if (cookies.store) store = cookies.store && JSON.parse(cookies.store)
 	try {
-		console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzz')
 		const INIT = (await KQL_Init.query({ fetch, variables: { domain } })).data
-		console.log('INIT.....................', INIT.storeOne.name)
 		store = store = INIT?.storeOne
 		settings = INIT?.settings
 		megamenu = INIT?.megamenu

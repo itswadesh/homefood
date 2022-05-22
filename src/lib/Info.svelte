@@ -98,11 +98,11 @@ import { currency } from './util'
 							</div>
 						</div>
 					</div>
-					<div class="green">
+					<!-- <div class="green">
 						<center>
 							<b>Delivery is now open</b>
 						</center>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</section>

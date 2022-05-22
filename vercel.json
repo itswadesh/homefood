@@ -1,6 +1,10 @@
 {
     "rewrites": [
         {
+            "source": "/api/:path*",
+            "destination": "https://api.misiki.in/api/:path*"
+        },
+        {
             "source": "/graphql",
             "destination": "https://api.misiki.in/graphql"
         },
