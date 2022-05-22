@@ -1,220 +1,367 @@
-<script context="module" lang="ts">
-import SEO from '$lib/components/SEO/index.svelte'
+<style>
+.success-animation {
+	margin: 150px auto;
+}
 
-export async function load({ url, params, fetch }) {
-	return { props: { id: url.searchParams.get('id') } }
+.checkmark {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	display: block;
+	stroke-width: 4;
+	stroke: #4bb71b;
+	stroke-miterlimit: 10;
+	box-shadow: inset 0px 0px 0px #4bb71b;
+	animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+	position: relative;
+	top: 5px;
+	right: 5px;
+	margin: 0 auto;
+}
+
+.checkmark__circle {
+	stroke-dasharray: 166;
+	stroke-dashoffset: 166;
+	stroke-width: 4;
+	stroke-miterlimit: 10;
+	stroke: #4bb71b;
+	fill: #fff;
+	animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+	transform-origin: 50% 50%;
+	stroke-dasharray: 48;
+	stroke-dashoffset: 48;
+	animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+	100% {
+		stroke-dashoffset: 0;
+	}
+}
+
+@keyframes scale {
+	0%,
+	100% {
+		transform: none;
+	}
+
+	50% {
+		transform: scale3d(1.1, 1.1, 1);
+	}
+}
+
+@keyframes fill {
+	100% {
+		box-shadow: inset 0px 0px 0px 30px #4bb71b;
+	}
+}
+</style>
+
+<script context="module" lang="ts">
+export async function load({ url, params, fetch, session, context }) {
+	let orderId = url.searchParams.get('order_id')
+	let paymentReferenceId = url.searchParams.get('payment_reference_id')
+	let addressId = url.searchParams.get('address')
+	let loading, err, address, order
+
+	console.log('orderId = ', orderId)
+
+	try {
+		loading = true
+
+		order = (
+			await KQL_PaySuccessPageHit.mutate({
+				fetch,
+				variables: {
+					orderId: orderId,
+					paymentReferenceId: paymentReferenceId || null
+				}
+			})
+		).data?.paySuccessPageHit
+
+		console.log('Order = ', order)
+	} catch (e) {
+		err = e
+	} finally {
+		loading = false
+	}
+	return { props: { loading, address, err, order } }
 }
 </script>
 
 <script>
-import { currency, date } from '$lib/util'
-import { onMount } from 'svelte'
+import ImageLoader from '$lib/components/Image/ImageLoader.svelte'
+import { KQL_Address, KQL_PaySuccessPageHit } from '$lib/graphql/_kitql/graphqlStores'
+import PrimaryButton from '$lib/ui/PrimaryButton.svelte'
+import { currency, store } from '$lib/util'
 
-import OrderAddressDetails from './_OrderAddressDetails.svelte'
-import OrderSuccessSkeleton from './_OrderSuccessSkeleton.svelte'
-import { KQL_MyOrders, KQL_PaySuccessPageHit } from '$lib/graphql/_kitql/graphqlStores'
-export let id
-onMount(() => {
-	refresh()
-})
-let order = null,
-	loading = false
-async function refresh() {
-	try {
-		loading = true
-		order = (await KQL_PaySuccessPageHit.mutate({ variables: { orderId: id } })).data
-			.paySuccessPageHit
-	} catch (e) {
-	} finally {
-		loading = false
-	}
-}
-const seoProps = {
-	title: 'Payment-Success',
-	metadescription: 'Payment is successfully completed'
-}
+export let loading, err, order
 </script>
 
-<SEO {...seoProps} />
+{#if order}
+	<div class="container mx-auto w-full max-w-6xl px-4 py-5 pb-10 text-gray-800 sm:px-10 md:py-10 ">
+		<!-- {#if !order && loading}
+			<OrderSuccessSkeleton />
+		{/if} -->
 
-<div class="container mx-auto rounded-lg bg-white">
-	<div class="h-full max-w-full p-2 sm:p-3 lg:p-8">
-		<div class="flex flex-col">
-			<div class="p-2 sm:p-4 lg:mt-12 lg:p-12">
-				<div class="">
-					<div class="flex items-center justify-center rounded-full lg:-mt-28">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="text-secondary-200 h-24 w-24 md:h-28 md:w-28"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-							></path>
-						</svg>
-					</div>
-					{#if order}
-						<h2 class="text-center text-3xl font-bold">
-							Paid:
-							{currency(order.amount.total)}
-						</h2>
-						<h3
-							class="
-                pt:mt-0 flex
-                flex-row
-                justify-center
-                pt-4
-                lg:justify-between
-              ">
-							<div class="text-2xl font-medium text-gray-700">Thanks for your Order!!</div>
-						</h3>
-					{/if}
-					{#if !order && loading}
-						<OrderSuccessSkeleton />
-					{:else if order}
-						<div>
-							<h3
-								class="
-                  flex flex-row
-                  justify-center
-                  mt-1
-                  font-medium
-                  lg:justify-start
-                ">
-								<div class="text-gray-500 me-2">Order Number:</div>
-								<div class="underline text-secondary-500 underline-secondary-500">
-									{order.orderNo}
-								</div>
-							</h3>
-							<div
-								class="
-                  flex flex-col
-                  justify-center
-                  w-full
-                  lg:justify-between
-                  lg:flex-row
-                  py-7
-                ">
-								<div
-									class="
-                    w-full
-                    text-sm
-                    font-light
-                    text-center text-gray-500
-                    lg:text-start
-                    lg:w-3/5
-                  ">
-									Your Order was place on <b>{date(order.createdAt)}</b> . A Confirmation e-mail will
-									be sent to the e-mail Address(es) that you specified in Order details.
-								</div>
-								<div class="flex flex-row justify-center mt-6 text-sm lg:mt-0">
-									<a
-										href="/my/orders"
-										class="
-                        p-2
-                        text-white
-                        bg-primary-500
-                        border-primary-500 border
-                        rounded
-                        shadow
-                        px-4
-                        lg:px-3
-                        lg:p-2
-                        focus:outline-none
-                        duration-200
-                        hover:-translate-y-0.5
-                        transition
-                        transform
-                        ease-in-out
-                        focus:ring-opacity-50
-                        focus:ring
-                        focus:ring-offset-2
-                        focus:ring-primary-500
-                      ">
-										View Order Details
-									</a>
-									<a
-										href="/"
-										class="
-                        p-2
-                        my-auto
-                        ms-4
-                        text-secondary-200
-                        border border-secondary-200
-                        rounded
-                        shadow
-                        focus:outline-none
-                        md:py-2
-                        px-4
-                        lg:px-3
-                        lg:p-2
-                        duration-200
-                        hover:-translate-y-0.5
-                        transition
-                        transform
-                        ease-in-out
-                        focus:ring-opacity-50
-                        hover:opacity-8
-                        focus:ring focus:ring-offset-2 focus:ring-green-500
-                      ">
-										Continue Shopping
-									</a>
-								</div>
-							</div>
-							<div>
-								<div class="my-4 font-medium text-gray-700">Item Details</div>
-								{#each order.items as item}
-									<div class="flex flex-row justify-between w-full pb-6 lg:pb-0">
-										<div class="flex flex-row w-full my-3">
-											<a href="{`/${item?.slug}?id=${item?.pid}`}" class="">
-												<img src="{item?.imgCdn}" alt="" class="object-cover border w-28" />
+		<div class="text-center">
+			<div class="mb-5 sm:mb-10">
+				<svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+					<circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"></circle>
+
+					<path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
+				</svg>
+			</div>
+			{#if order}
+				<h2 class="mb-5 text-2xl font-bold sm:text-3xl">Thank You For Your Purchase !!</h2>
+			{/if}
+			<h5 class="mb-2 flex items-center justify-center space-x-2 text-sm sm:text-base">
+				<span class="text-gray-500">Order Number:</span>
+
+				<b>
+					{order.orderNo}
+				</b>
+			</h5>
+
+			<p class="mb-4 text-sm sm:mb-9">
+				Your Order was place on <b>{order.createdAt}</b> <br />
+
+				A Confirmation e-mail will be sent to the e-mail address that you specified in Order
+				details.
+			</p>
+
+			<div class="mb-4 flex flex-wrap items-center justify-center text-sm sm:mb-7 sm:text-base">
+				<a href="/my/orders" rel="noopener" class="m-1 sm:m-3">
+					<PrimaryButton class="whitespace-nowrap">View Order Details</PrimaryButton>
+				</a>
+
+				<a href="/" rel="noopener" class="m-1 sm:m-3">
+					<button
+						class="flex transform items-center justify-center space-x-1 whitespace-nowrap rounded-md border border-gray-700 bg-white px-4 py-2 font-semibold tracking-wide text-gray-800 shadow-md transition duration-300 hover:border-primary-500 hover:bg-opacity-80 hover:text-primary-500 hover:shadow focus:outline-none focus:ring-0 focus:ring-offset-0 active:scale-95">
+						Continue Shopping
+					</button>
+				</a>
+			</div>
+		</div>
+
+		<div
+			class="mx-auto max-w-7xl space-y-5 sm:flex sm:items-start sm:justify-center sm:space-y-0 sm:space-x-10 md:space-x-20">
+			<div class="sm:w-1/2">
+				<div class="mb-5">
+					<h6
+						class="mb-4 border-b border-dashed border-gray-400 pb-2 text-base font-semibold sm:text-lg">
+						Item Details
+					</h6>
+
+					<div class="itmes-start flex flex-col gap-4">
+						{#each order.items as item, ix}
+							<a
+								href="/products/{item.slug}?id={item.pid}"
+								rel="noopener"
+								class="group flex w-full flex-row justify-between
+								
+								{ix != order.items.length - 1 ? 'border-b' : ''}">
+								<div class="flex w-full flex-row gap-4">
+									<div>
+										<ImageLoader src="{item.imgCdn}" alt="" class="h-auto w-20 object-contain" />
+									</div>
+
+									<div class="w-4/5 flex-1 lg:w-10/12">
+										{#if store.isFnb && item.vendor}
+											<b class="mb-2 text-sm">
+												{item.vendor.businessName}
+											</b>
+										{:else if item.brandName}
+											<b class="mb-2 text-sm">
+												{item.brandName}
+											</b>
+										{/if}
+
+										<div class="mb-2 flex items-start gap-2">
+											<a
+												href="/products/{item.slug}?id={item.pid}"
+												class="text-sm text-gray-500 group-hover:underline">
+												{item.name}
 											</a>
-											<div class="relative flex flex-col w-4/5 ms-3 lg:w-10/12">
-												<a
-													href="{`/${item?.slug}?id=${item?.pid}`}"
-													class="text-base font-normal text-gray-600 truncate">
-													{item?.name}
-												</a>
-												<div
-													class="
-                          flex
-                          items-center
-                          justify-start
-                          w-full
-                          mt-2
-                          text-sm
-                          font-medium
-                          text-gray-500
-                        ">
-													<div class="me-4">Qty: {item?.qty}</div>
-													<div
-														class="
-                            flex flex-row
-                            text-base
-                            font-medium
-                            justify-self-end
-                            md:my-auto
-                          ">
-														<div class="font-light text-gray-400 me-1">Price:</div>
-														<div class="text-secondary-200">
-															{currency(item?.price)}
-														</div>
-													</div>
+
+											{#if store.isFnb}
+												<div>
+													{#if item.foodType === 'V'}
+														<ImageLoader src="/product/veg.png" alt="veg" class="h-5 w-5" />
+													{:else if item.foodType === 'N' || item.foodType === 'E'}
+														<ImageLoader src="/product/non-veg.png" alt="veg" class="h-5 w-5" />
+													{:else}
+														<ImageLoader src="/product/other.png" alt="veg" class="h-5 w-5" />
+													{/if}
 												</div>
+											{/if}
+										</div>
+
+										<div class="mb-2 flex w-full items-center gap-4 text-sm">
+											<div class="me-4">
+												<span class="font-medium text-gray-500 me-2">Qty :</span>
+
+												<b>{item.qty}</b>
+											</div>
+
+											<div>
+												<span class="font-medium text-gray-500 me-2">Price :</span>
+
+												<b>{currency(item.price)}</b>
 											</div>
 										</div>
+
+										<!-- Options -->
+
+										{#if item.usedOptions}
+											<div class="mb-2 flex flex-col space-y-2 text-sm sm:mb-4">
+												{#each item.usedOptions as o}
+													<div class="flex flex-col items-start sm:flex-row">
+														<h6 class="mb-1 w-full sm:mb-0 sm:w-52 sm:me-5">
+															{o.name}
+														</h6>
+
+														{#if o.val && o.val.length}
+															<span class="font-medium">
+																{o.val[0]}
+															</span>
+														{/if}
+
+														<div class="flex flex-col space-y-1 font-medium">
+															{#if o.dates && o.dates[0]}
+																<span>
+																	{o.dates[0]}
+																</span>
+															{/if}
+
+															{#if o.dates && o.dates[1]}
+																<span>
+																	{o.dates[1]}
+																</span>
+															{/if}
+														</div>
+													</div>
+												{/each}
+											</div>
+										{/if}
 									</div>
-								{/each}
-							</div>
-						</div>
-					{/if}
-					<OrderAddressDetails order="{order}" />
+								</div>
+							</a>
+						{/each}
+					</div>
 				</div>
+			</div>
+
+			<div class="flex flex-col gap-4 sm:w-1/2">
+				{#if order && order.address}
+					<div class="text-sm">
+						<h6
+							class="mb-4 border-b border-dashed border-gray-400 pb-2 text-base font-semibold sm:text-lg">
+							Shipping Information
+						</h6>
+
+						<div class="text-sm text-gray-600">
+							{#if order.address.firstName}
+								<h5 class="mb-2 text-base font-semibold capitalize tracking-wide">
+									{order.address.firstName}
+
+									{order.address.lastName}
+								</h5>
+							{/if}
+
+							<div class="s flex flex-wrap">
+								{#if order.address.address}
+									<div>
+										{order.address.address},
+									</div>
+								{/if}
+
+								{#if order.address.city}
+									<div>
+										{order.address.city},
+									</div>
+								{/if}
+
+								{#if order.address.country}
+									<div>
+										{order.address.country}
+									</div>
+								{/if}
+
+								{#if order.address.zip}
+									<div>
+										{order.address.zip}
+									</div>
+								{/if}
+							</div>
+
+							{#if order.address.phone || order.address.userPhone}
+								<div>
+									<b>Phone:</b>
+
+									<span>{order.address.phone || order.userPhone}</span>
+								</div>
+							{/if}
+
+							{#if order.address.email}
+								<div>
+									<b>Email:</b>
+
+									<span>{order.address.email}</span>
+								</div>
+							{/if}
+						</div>
+					</div>
+				{/if}
+
+				{#if order && order.amount}
+					<div class="text-sm">
+						<h6
+							class="mb-4 border-b border-dashed border-gray-400 pb-2 text-base font-semibold sm:text-lg">
+							Payment Information
+						</h6>
+
+						<div class="flex max-w-max flex-col items-start gap-2">
+							{#if order.amount.subtotal}
+								<div class="flex items-center">
+									<h6 class="mr-2 w-20">Subtotal</h6>
+
+									<span>: &nbsp; {currency(order.amount.subtotal)} </span>
+								</div>
+							{/if}
+
+							{#if order.amount.discount}
+								<div class="flex items-center">
+									<h6 class="mr-2 w-20">Discount</h6>
+
+									<span>: &nbsp; {currency(order.amount.discount)} </span>
+								</div>
+							{/if}
+
+							{#if order.amount.shipping}
+								<div class="flex items-center">
+									<h6 class="mr-2 w-20">Shipping</h6>
+
+									<span>: &nbsp; {currency(order.amount.shipping)} </span>
+								</div>
+							{/if}
+
+							{#if order.amount.total}
+								<hr class="w-full border-t-2 border-gray-300" />
+
+								<div class="flex items-center text-base font-bold">
+									<h6 class="mr-2 w-20">Total</h6>
+
+									<span>: &nbsp; {currency(order.amount.total)} </span>
+								</div>
+							{/if}
+						</div>
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>
-</div>
+{/if}

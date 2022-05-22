@@ -80,7 +80,7 @@ async function refreshAddress() {
 
 			<div class="my-10 w-1/2">
 				<a
-					href="/products/checkout/add-address?id=new"
+					href="/checkout/add-address?id=new"
 					class="group flex h-40 w-full flex-col items-center justify-center rounded-md border border-dashed border-gray-400 hover:border-primary-500 sm:h-60 ">
 					<div
 						class="flex h-8 w-8 items-center justify-center rounded-full border  border-gray-400 bg-gray-100 group-hover:border-primary-500 sm:h-10 sm:w-10">
