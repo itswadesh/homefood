@@ -44,8 +44,8 @@ import Overlay from '$lib/Overlay.svelte'
 import CartBar from '$lib/CartBar.svelte'
 import { get } from '$lib/util/api'
 const seoProps = {
-	title: 'Search-Products',
-	metadescription: 'Search your products'
+	title: 'Misiki Food | Homemade',
+	metadescription: 'Home made food home delivered by Misiki'
 }
 export let banners,
 	featuredProducts = null,
@@ -74,6 +74,7 @@ onMount(async () => {
 })
 </script>
 
+<SEO {...seoProps} />
 <div>
 	<Loading active="{loading}" />
 	<div>
