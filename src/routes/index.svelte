@@ -51,12 +51,12 @@ export let banners,
 	featuredProducts = null,
 	hotProducts = null,
 	shoppoProducts = null,
-	loading,
 	query
 
 let products = [],
 	count,
 	facets,
+	loading,
 	err
 
 onMount(async () => {

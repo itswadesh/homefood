@@ -106,62 +106,55 @@ strong {
 </style>
 
 <script>
-import { currency } from './util'
+import CartButtons from './CartButtons.svelte'
 
+import { currency } from './util'
 export let products, showcart
 </script>
 
-	<div class="products head">
-		{#each products as p, ix}
-			<div class="product {ix !== 0 ? 'border' : ''}">
+<div class="products head">
+	{#each products as p, ix}
+		<div class="product {ix !== 0 ? 'border' : ''}">
+			<div class="image">
+				<img src="{p._source.img}" alt="" class="h-24 w-24 p-1 shadow" />
+			</div>
+			<div class="content">
+				<strong>{p._source.name}</strong>
+				<div class="text-xs">
+					{#if p._source.vendor.businessName}
+						by <span class="text-gray-500">{p._source.vendor.businessName || ''}</span>
+						<!-- href="{`/vendor/${p._source.vendor.slug}?id=${p._source.vendor.id}`}" -->
+					{/if}
+				</div>
+			</div>
+			<div class="price-align">
+				<div class="big">{currency(p._source.price)}</div>
+				{#if showcart}
+					<CartButtons product="{{ id: p._id }}" />
+				{/if}
+			</div>
+		</div>
+	{/each}
+	{#each products as p, ix}
+		<div class="webcard {ix != 0 ? 'border' : ''}">
+			<div class="webcolumn">
 				<div class="image">
 					<img src="{p._source.img}" alt="" class="h-24 w-24 p-1 shadow" />
 				</div>
 				<div class="content">
-					<strong>{p._source.name}</strong>
-				</div>
-				<div class="price-align">
-					<div class="big">{currency(p._source.price)}</div>
-{#if showcart}
-				<CartButtons
-          product="{
-            id: p._source._id,
-            name: p._source.name,
-            img: p._source.img,
-            price: p._source.price
-          }"
-        />
-		{/if}
-				</div>
-			</div>
-		{/each}
-		{#each products as p, ix}
-			<div class="webcard {ix != 0 ? 'border' : ''}">
-				<div class="webcolumn">
-					<div class="image">
-						<img src="{p._source.img}" alt="" class="h-24 w-24 p-1 shadow" />
+					<div>
+						<strong class="f-12">{p._source.name}</strong>
 					</div>
-					<div class="content">
+					<div class="webprice">
+						<div class="big">{currency(p._source.price)}</div>
 						<div>
-							<strong class="f-12">{p._source.name}</strong>
-						</div>
-						<div class="webprice">
-							<div class="big">{currency(p._source.price)}</div>
-							<div>
 							{#if showcart}
-					<CartButtons
-          product="{
-            id: p._source._id,
-            name: p._source.name,
-            img: p._source.img,
-            price: p._source.price
-          }"
-        />
-		{/if}
-							</div>
+								<CartButtons product="{{ id: p._id }}" />
+							{/if}
 						</div>
 					</div>
 				</div>
 			</div>
-		{/each}
-	</div>
+		</div>
+	{/each}
+</div>

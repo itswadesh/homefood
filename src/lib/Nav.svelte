@@ -56,9 +56,9 @@ onMount(async () => {
 <nav class=" frosted border-gray-100 p-4 shadow-md">
 	<div class="flex items-center justify-between">
 		<a href="/" class="flex max-w-max items-center focus:outline-none">
-			<img alt="" class="h-8" src="/logo.png" />
+			<img alt="" class="h-8" src="/logo_512.png" />
 		</a>
-		{#if $KQL_Init.data?.megamenu}
+		<!-- {#if $KQL_Init.data?.megamenu}
 			<div
 				class="ml-8 flex w-full items-center justify-center text-sm font-semibold uppercase tracking-wide xl:ml-10">
 				{#each $KQL_Init.data?.megamenu as c}
@@ -70,7 +70,7 @@ onMount(async () => {
 					</a>
 				{/each}
 			</div>
-		{/if}
+		{/if} -->
 		<div class="flex flex-row items-center">
 			<a href="/cart">
 				<button

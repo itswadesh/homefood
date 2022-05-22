@@ -113,19 +113,19 @@ profile .card-profile-image img {
 </style>
 
 <script>
+import { KQL_Cart } from './graphql/_kitql/graphqlStores'
 import { currency } from './util'
-
-let getTotalCount = 0
+$: cart = $KQL_Cart.data?.cart || {}
 </script>
 
 <div>
-	{#if getTotalCount != 0}
+	{#if cart.qty != 0}
 		<footer class="footer">
 			<nav class="navbar header has-shadow is-primary">
 				<div class="headeralign1 shadow" style="color:white;">
 					<div style="padding-left: 13px;">
 						<span>
-							{getTotalCount} item {#if getTotalCount > 1}s{/if} | {currency(getTotal)}
+							{cart.qty} item{#if cart.qty > 1}s{/if} | {currency(cart.total)}
 						</span>
 					</div>
 					<div class="navbar-brand1 ">

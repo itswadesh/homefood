@@ -42,7 +42,7 @@ function submit() {
 		</div>
 
 		<p class="d mt-1 text-xs tracking-wider text-gray-400">
-			Free shipping on orders of ₹999 or more. For first purchase,
+			Free shipping on orders of ₹899 or more. For first purchase,
 			<a href="/" class="underline hover:text-primary-500">See Offer</a>
 		</p>
 	</div>

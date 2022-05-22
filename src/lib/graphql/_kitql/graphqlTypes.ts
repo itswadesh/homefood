@@ -1289,6 +1289,7 @@ export type Mutation = {
   deleteState?: Maybe<Scalars['Boolean']>;
   deleteStore?: Maybe<Scalars['Boolean']>;
   deleteSubscription?: Maybe<Scalars['Boolean']>;
+  deleteTag?: Maybe<OneTag>;
   deleteTemplate?: Maybe<Scalars['Boolean']>;
   deleteVideo?: Maybe<Scalars['Boolean']>;
   deleteVideos?: Maybe<Scalars['Int']>;
@@ -1413,6 +1414,7 @@ export type Mutation = {
   saveStoreCurrency?: Maybe<OneStoreCurrency>;
   saveStoreLanguage?: Maybe<OneStoreLanguage>;
   saveSubscription?: Maybe<OneSubscription>;
+  saveTag?: Maybe<OneTag>;
   saveTemplate?: Maybe<OneTemplate>;
   saveUnit?: Maybe<OneUnit>;
   saveUser?: Maybe<User>;
@@ -1638,7 +1640,8 @@ export type MutationCommonShipmentsArgs = {
 
 
 export type MutationConfirmStripeSubscriptionArgs = {
-  subscribe: Scalars['ID'];
+  paymentReferenceId?: InputMaybe<Scalars['String']>;
+  subscribeId?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -1876,6 +1879,11 @@ export type MutationDeleteStoreArgs = {
 
 
 export type MutationDeleteSubscriptionArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteTagArgs = {
   id: Scalars['ID'];
 };
 
@@ -2864,6 +2872,7 @@ export type MutationSaveProductArgs = {
   store?: InputMaybe<Scalars['ID']>;
   styleCode?: InputMaybe<Scalars['String']>;
   styleId?: InputMaybe<Scalars['String']>;
+  tags?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   tax?: InputMaybe<Scalars['Float']>;
   time?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
@@ -3228,6 +3237,15 @@ export type MutationSaveSubscriptionArgs = {
   transactionFeesType?: InputMaybe<Scalars['String']>;
   unlimitedProducts?: InputMaybe<Scalars['Boolean']>;
   unlimitedValidity?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationSaveTagArgs = {
+  active?: InputMaybe<Scalars['Boolean']>;
+  colorCode?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -4052,6 +4070,7 @@ export type OneProduct = {
   store?: Maybe<Scalars['ID']>;
   styleCode?: Maybe<Scalars['String']>;
   styleId?: Maybe<Scalars['String']>;
+  tags?: Maybe<Array<Maybe<Scalars['ID']>>>;
   tax?: Maybe<Scalars['Float']>;
   time?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
@@ -4334,6 +4353,7 @@ export type OneSubscribe = {
   amountDue?: Maybe<Scalars['Float']>;
   amountPaid?: Maybe<Scalars['Float']>;
   authLink?: Maybe<Scalars['String']>;
+  clientSecret?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['String']>;
   daysLeft?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
@@ -4359,6 +4379,7 @@ export type OneSubscription = {
   description?: Maybe<Scalars['String']>;
   discountCoupons?: Maybe<Scalars['Boolean']>;
   emailSupport?: Maybe<Scalars['Boolean']>;
+  features?: Maybe<Array<Maybe<Scalars['String']>>>;
   freeSSL?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['ID']>;
   maxAdminAllowed?: Maybe<Scalars['Int']>;
@@ -4379,6 +4400,19 @@ export type OneSubscription = {
   unlimitedProducts?: Maybe<Scalars['Boolean']>;
   unlimitedValidity?: Maybe<Scalars['Boolean']>;
   updatedAt?: Maybe<Scalars['String']>;
+};
+
+export type OneTag = {
+  __typename?: 'OneTag';
+  active?: Maybe<Scalars['Boolean']>;
+  colorCode?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+  store?: Maybe<Scalars['ID']>;
+  updatedAt: Scalars['String'];
+  user?: Maybe<Scalars['ID']>;
 };
 
 export type OneTemplate = {
@@ -5078,6 +5112,7 @@ export type Product = {
   store?: Maybe<Store>;
   styleCode?: Maybe<Scalars['String']>;
   styleId?: Maybe<Scalars['String']>;
+  tags?: Maybe<Array<Maybe<Tag>>>;
   tax?: Maybe<Scalars['Float']>;
   time?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
@@ -5259,6 +5294,7 @@ export type Query = {
   myReferrals?: Maybe<ReferralRes>;
   myScheduleDemos?: Maybe<ScheduleDemoRes>;
   mySubscribes?: Maybe<SubscribeRes>;
+  myTags?: Maybe<TagRes>;
   myTokens?: Maybe<FcmTokenRes>;
   myVideos?: Maybe<VideoRes>;
   myWallet?: Maybe<OneWallet>;
@@ -5369,6 +5405,8 @@ export type Query = {
   subscription?: Maybe<SaasSubscription>;
   subscriptions?: Maybe<SubscriptionRes>;
   syncStores?: Maybe<Scalars['Boolean']>;
+  tag?: Maybe<Tag>;
+  tags?: Maybe<TagRes>;
   template?: Maybe<Template>;
   templates?: Maybe<TemplateRes>;
   timesList?: Maybe<Array<Scalars['String']>>;
@@ -6308,6 +6346,15 @@ export type QueryMySubscribesArgs = {
 };
 
 
+export type QueryMyTagsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
+  store?: InputMaybe<Scalars['ID']>;
+};
+
+
 export type QueryMyTokensArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   page?: InputMaybe<Scalars['Int']>;
@@ -6968,6 +7015,20 @@ export type QuerySubscriptionsArgs = {
 };
 
 
+export type QueryTagArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryTagsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
+  store?: InputMaybe<Scalars['ID']>;
+};
+
+
 export type QueryTemplateArgs = {
   id: Scalars['ID'];
 };
@@ -7257,6 +7318,7 @@ export type SaasSubscription = {
   description?: Maybe<Scalars['String']>;
   discountCoupons?: Maybe<Scalars['Boolean']>;
   emailSupport?: Maybe<Scalars['Boolean']>;
+  features?: Maybe<Array<Maybe<Scalars['String']>>>;
   freeSSL?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['ID']>;
   maxAdminAllowed?: Maybe<Scalars['Int']>;
@@ -7820,6 +7882,7 @@ export type Subscribe = {
   amountDue?: Maybe<Scalars['Float']>;
   amountPaid?: Maybe<Scalars['Float']>;
   authLink?: Maybe<Scalars['String']>;
+  clientSecret?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['String']>;
   daysLeft?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
@@ -7866,6 +7929,19 @@ export type Tc = {
   _id?: Maybe<TodaysVendors>;
   amount?: Maybe<Scalars['Int']>;
   count?: Maybe<Scalars['Int']>;
+};
+
+export type Tag = {
+  __typename?: 'Tag';
+  active?: Maybe<Scalars['Boolean']>;
+  colorCode?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+  store?: Maybe<Store>;
+  updatedAt: Scalars['String'];
+  user?: Maybe<User>;
 };
 
 export type Tax = {
@@ -8841,6 +8917,14 @@ export type SubscriptionRes = {
   __typename?: 'subscriptionRes';
   count?: Maybe<Scalars['Int']>;
   data?: Maybe<Array<Maybe<SaasSubscription>>>;
+  page?: Maybe<Scalars['Int']>;
+  pageSize?: Maybe<Scalars['Int']>;
+};
+
+export type TagRes = {
+  __typename?: 'tagRes';
+  count?: Maybe<Scalars['Int']>;
+  data?: Maybe<Array<Maybe<Tag>>>;
   page?: Maybe<Scalars['Int']>;
   pageSize?: Maybe<Scalars['Int']>;
 };
