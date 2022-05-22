@@ -3,7 +3,7 @@ import type { Load } from '@sveltejs/kit'
 export const load: Load = async ({ url, session }) => {
 	if (!session?.me) {
 		return {
-			redirect: `/login?ref=${url.pathname}`,
+			redirect: `/${loginUrl}?ref=${url.pathname}`,
 			status: 302
 		}
 	}
@@ -18,10 +18,9 @@ import Pricesummary from '$lib/Pricesummary.svelte'
 import { goto } from '$app/navigation'
 import { session } from '$app/stores'
 import SEO from '$lib/components/SEO/index.svelte'
+import { loginUrl } from '$lib/store'
 
 let address = null
-// const user = $session.user
-// if (!user || !user.email) goto('/login?ref=/checkout/add')
 
 const seoProps = {
 	title: 'Fill-Address',

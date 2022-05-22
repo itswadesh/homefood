@@ -13,7 +13,7 @@ export let phone, loading
 
 	<form class="mb-8" on:submit|preventDefault="{() => dispatch('send', phone)}">
 		<TextboxFloating
-			type="text"
+			type="tel"
 			label="Mobile Number"
 			class="mb-1 w-full"
 			required

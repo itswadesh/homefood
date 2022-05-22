@@ -17,7 +17,7 @@
 	background-size: 53px 1px;
 	background-repeat: repeat-x;
 	background-position-x: 47px;
-	width: 65%;
+	width: 70%;
 	outline: none;
 }
 </style>
@@ -42,15 +42,21 @@ const countDownTimerStart = () => {
 		}, 1000)
 	}
 }
+function checkLength(e) {
+	if (e.target.value?.length === 4) {
+		dispatch('verifyOtp', e.target.value)
+	} else {
+		return
+	}
+}
 </script>
 
 <div>
 	<div class="mb-5 flex flex-col items-center justify-center space-y-1 text-center">
 		<div class="text-sm">Enter the OTP sent to</div>
 
-		<div class="flex text-xs space-x-2">
+		<div class="flex space-x-2 text-xs">
 			<b>{phone} </b>
-
 			<button
 				type="button"
 				class="font-bold text-primary-500 hover:text-primary-700 focus:outline-none"
@@ -64,7 +70,12 @@ const countDownTimerStart = () => {
 		class="mb-8 flex flex-col text-center"
 		on:submit|preventDefault="{() => dispatch('verifyOtp', otp)}">
 		<div class="mb-5 flex items-center justify-center space-x-5">
-			<input id="partitioned" type="number" maxlength="4" bind:value="{otp}" />
+			<input
+				id="partitioned"
+				type="number"
+				on:input="{checkLength}"
+				maxlength="4"
+				bind:value="{otp}" />
 		</div>
 
 		<span class="mb-2 text-sm">Didn't receive the OTP?</span>
@@ -82,7 +93,7 @@ const countDownTimerStart = () => {
 			{/if}
 		</div>
 
-		<GradiantButton class="w-full max-w-sm mx-auto" type="submit" loading="{loading}">
+		<GradiantButton class="mx-auto w-full max-w-sm" type="submit" loading="{loading}">
 			VERIFY
 		</GradiantButton>
 	</form>

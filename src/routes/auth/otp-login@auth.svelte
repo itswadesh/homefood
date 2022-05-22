@@ -33,9 +33,9 @@ import SendOtp from './_SendOtp.svelte'
 import { page, session } from '$app/stores'
 import { browser } from '$app/env'
 import { KQL_GetOtp, KQL_StoreOne, KQL_VerifyOtp } from '$lib/graphql/_kitql/graphqlStores'
-import Cookie from 'cookie-universal'
 import { onMount } from 'svelte'
-
+import Cookie from 'cookie-universal'
+const cookies = Cookie()
 export let me, ref, store
 // let go = '/auth/login'
 
@@ -75,10 +75,23 @@ async function handleVerifyOtp(detail) {
 		loading = true
 		// console.log(detail)
 		const otp = `${detail.detail}`
-		await KQL_VerifyOtp.mutate({ variables: { phone, otp } })
-		// $session.me = me
-		let r = ref || '/my'
-		if (browser) goto(r)
+		const data = (await KQL_VerifyOtp.mutate({ variables: { phone, otp } })).data?.verifyOtp
+		if ($KQL_VerifyOtp.errors) toast($KQL_VerifyOtp.errors[0].message, 'error')
+		else {
+			const me = {
+				email: data.email,
+				firstName: data.firstName,
+				lastName: data.lastName,
+				avatar: data.avatar,
+				role: data.role,
+				verified: data.verified,
+				active: data.active
+			}
+			await cookies.set('me', me, { path: '/' })
+			$session.me = me
+			let r = ref || '/my'
+			if (browser) goto(r)
+		}
 	} catch (e) {
 		toast(e, 'error')
 	} finally {

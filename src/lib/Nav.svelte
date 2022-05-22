@@ -23,7 +23,7 @@ import { KQL_Cart, KQL_Me } from './graphql/_kitql/graphqlStores'
 import { signOut } from './services'
 import { onMount } from 'svelte'
 import { toast } from './util'
-
+const loginUrl = '/auth/otp-login'
 onMount(async () => {
 	await KQL_Me.query({})
 	await KQL_Cart.query({ settings: { policy: 'network-only' } })
@@ -83,7 +83,7 @@ onMount(async () => {
 				</button>
 			</a>
 
-			<a href="/wishlist">
+			<!-- <a href="/wishlist">
 				<button
 					class="group mr-5 flex  transform items-center whitespace-nowrap hover:text-primary-500 focus:outline-none active:scale-95">
 					<svg
@@ -100,8 +100,8 @@ onMount(async () => {
 						></path>
 					</svg>
 				</button>
-			</a>
-			{#if !$KQL_Me.errors}
+			</a> -->
+			{#if me?.active}
 				<a href="/my" class="mx-2 flex min-w-max items-center ">
 					{#if me?.firstName}
 						<div class=" mr-2 flex-1 whitespace-nowrap text-sm font-semibold">
@@ -121,7 +121,7 @@ onMount(async () => {
 					</div>
 				</a>
 			{:else}
-				<a href="/login" class="text-sm font-semibold tracking-wide hover:text-primary-500">
+				<a href="{loginUrl}" class="text-sm font-semibold tracking-wide hover:text-primary-500">
 					LOGIN
 				</a>
 			{/if}

@@ -128,6 +128,17 @@ export { className as class }
 				aria-label="{label}"
 				required="{required}"
 				on:input="{() => dispatch('input')}" />
+		{:else if type === 'tel'}
+			<input
+				type="tel"
+				bind:value
+				id="{id}"
+				name="{name}"
+				class="input-class floating-input"
+				placeholder="{placeholder}"
+				aria-label="{label}"
+				required="{required}"
+				on:input="{() => dispatch('input')}" />
 		{/if}
 		<span class="highlight"></span>
 
