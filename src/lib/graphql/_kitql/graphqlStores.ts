@@ -4818,6 +4818,55 @@ function KQL_MeStore() {
  */
 export const KQL_Me = KQL_MeStore();
 
+function KQL_ResendEmailStore() {
+	const operationName = 'KQL_ResendEmail';
+	const operationType = ResponseResultType.Mutation;
+
+	// prettier-ignore
+	const { subscribe, set, update } = writable<RequestResult<Types.ResendEmailMutation, Types.ResendEmailMutationVariables>>({...defaultStoreValue, operationName, operationType});
+
+		async function mutateLocal(
+			params?: RequestParameters<Types.ResendEmailMutationVariables>
+		): Promise<RequestResult<Types.ResendEmailMutation, Types.ResendEmailMutationVariables>> {
+			let { fetch, variables } = params ?? {};
+
+			const storedVariables = get(KQL_ResendEmail).variables;
+			variables = variables ?? storedVariables;
+
+			update((c) => {
+				return { ...c, isFetching: true, status: RequestStatus.LOADING };
+			});
+
+			// prettier-ignore
+			const res = await kitQLClient.request<Types.ResendEmailMutation, Types.ResendEmailMutationVariables>({
+				skFetch: fetch,
+				document: Types.ResendEmailDocument,
+				variables, 
+				operationName, 
+				operationType, 
+				browser
+			});
+			const result = { ...res, isFetching: false, status: RequestStatus.DONE, variables };
+			set(result);
+			return result;
+		}
+
+	return {
+		subscribe,
+
+		/**
+		 * Can be used for SSR, but simpler option is `.queryLoad`
+		 * @returns fill this store & the cache
+		 */
+		mutate: mutateLocal,
+
+	};
+}
+/**
+ * KitQL Svelte Store with the latest `ResendEmail` Operation
+ */
+export const KQL_ResendEmail = KQL_ResendEmailStore();
+
 function KQL_SignOutStore() {
 	const operationName = 'KQL_SignOut';
 	const operationType = ResponseResultType.Mutation;
@@ -5036,6 +5085,55 @@ function KQL_UpdateProfileStore() {
  * KitQL Svelte Store with the latest `UpdateProfile` Operation
  */
 export const KQL_UpdateProfile = KQL_UpdateProfileStore();
+
+function KQL_VerifyEmailStore() {
+	const operationName = 'KQL_VerifyEmail';
+	const operationType = ResponseResultType.Mutation;
+
+	// prettier-ignore
+	const { subscribe, set, update } = writable<RequestResult<Types.VerifyEmailMutation, Types.VerifyEmailMutationVariables>>({...defaultStoreValue, operationName, operationType});
+
+		async function mutateLocal(
+			params?: RequestParameters<Types.VerifyEmailMutationVariables>
+		): Promise<RequestResult<Types.VerifyEmailMutation, Types.VerifyEmailMutationVariables>> {
+			let { fetch, variables } = params ?? {};
+
+			const storedVariables = get(KQL_VerifyEmail).variables;
+			variables = variables ?? storedVariables;
+
+			update((c) => {
+				return { ...c, isFetching: true, status: RequestStatus.LOADING };
+			});
+
+			// prettier-ignore
+			const res = await kitQLClient.request<Types.VerifyEmailMutation, Types.VerifyEmailMutationVariables>({
+				skFetch: fetch,
+				document: Types.VerifyEmailDocument,
+				variables, 
+				operationName, 
+				operationType, 
+				browser
+			});
+			const result = { ...res, isFetching: false, status: RequestStatus.DONE, variables };
+			set(result);
+			return result;
+		}
+
+	return {
+		subscribe,
+
+		/**
+		 * Can be used for SSR, but simpler option is `.queryLoad`
+		 * @returns fill this store & the cache
+		 */
+		mutate: mutateLocal,
+
+	};
+}
+/**
+ * KitQL Svelte Store with the latest `VerifyEmail` Operation
+ */
+export const KQL_VerifyEmail = KQL_VerifyEmailStore();
 
 function KQL_VerifyOtpStore() {
 	const operationName = 'KQL_VerifyOtp';

@@ -21,7 +21,6 @@ export async function load({ url, params, fetch, session, context }) {
 
 <script>
 import { goto } from '$app/navigation'
-import supabase from '$lib/supabase'
 import GradiantButton from '$lib/ui/GradiantButton.svelte'
 import TextboxFloating from '$lib/ui/TextboxFloating.svelte'
 import { toast } from '$lib/util'

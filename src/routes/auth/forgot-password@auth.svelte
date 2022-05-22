@@ -18,7 +18,6 @@ export async function load({ url, params, fetch, session, context }) {
 
 <script>
 import { goto } from '$app/navigation'
-import supabase from '$lib/supabase'
 import GradiantButton from '$lib/ui/GradiantButton.svelte'
 import TextboxFloating from '$lib/ui/TextboxFloating.svelte'
 import { toast } from '$lib/util'
@@ -96,7 +95,7 @@ async function handleForgotPassword() {
 	<div class="flex items-center justify-center">
 		<a
 			href="{$loginUrl}?ref=/auth/forgot-password"
-			class="text-start max-w-max text-primary-500 hover:underline">
+			class="max-w-max text-primary-500 text-start hover:underline">
 			Back to login
 		</a>
 	</div>

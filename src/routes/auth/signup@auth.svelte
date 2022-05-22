@@ -32,7 +32,6 @@ export async function load({ url, params, fetch, session, context }) {
 import { browser } from '$app/env'
 import { goto } from '$app/navigation'
 import { getUser, signUp } from '$lib/services'
-import supabase from '$lib/supabase'
 import GradiantButton from '$lib/ui/GradiantButton.svelte'
 import TextboxFloating from '$lib/ui/TextboxFloating.svelte'
 import { toast } from '$lib/util'
@@ -266,7 +265,7 @@ async function handleSignUp() {
 	</form>
 
 	<div class="mx-auto flex w-full max-w-sm flex-wrap items-center justify-center gap-4 leading-4">
-		<a href="/auth/login" class="text-start max-w-max text-primary-500 hover:underline"> SignIn </a>
+		<a href="/auth/login" class="max-w-max text-primary-500 text-start hover:underline"> SignIn </a>
 
 		<!-- <a
 					href="{`/auth/signup?role=vendor&store=${store?.id}&ref=${$page.url.searchParams.get('ref') || '/'}`}"
