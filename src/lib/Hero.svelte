@@ -83,6 +83,6 @@ export let closed = false
 <body>
 	<div class="backgroundimg height"></div>
 	<div class="heading">
-		<div class="link link--move title" data-letters="Foodfire">Foodfire</div>
+		<div class="link link--move title" data-letters="Misiki">Misiki</div>
 	</div>
 </body>
