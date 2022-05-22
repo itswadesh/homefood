@@ -67,8 +67,6 @@ export async function load({ url, params, fetch, session, context }) {
 	let addressId = url.searchParams.get('address')
 	let loading, err, address, order
 
-	console.log('orderId = ', orderId)
-
 	try {
 		loading = true
 
@@ -81,8 +79,6 @@ export async function load({ url, params, fetch, session, context }) {
 				}
 			})
 		).data?.paySuccessPageHit
-
-		console.log('Order = ', order)
 	} catch (e) {
 		err = e
 	} finally {

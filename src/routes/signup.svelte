@@ -122,7 +122,7 @@ async function submit(e) {
 					<div class="ml-4 text-lg font-semibold tracking-tight">Already registered? Login</div>
 				</a>
 				<div class="mx-4 mt-10 mb-10 text-center text-xs tracking-widest text-gray-500">
-					<h5 class="mb-1">By continuing, you agree to Svelte Commerce</h5>
+					<h5 class="mb-1">By continuing, you agree to Misiki</h5>
 					<a class="text-gray-800 hover:underline" href="/">Terms of Service</a>
 					,
 					<a class="text-gray-800 hover:underline" href="/">Privacy Policy</a>

@@ -41,7 +41,7 @@ const message = offline ? 'Find the internet and try again' : error.message
 	</div>
 	<div>
 		<a href="/" class="mt-4 block rounded px-4 py-2 text-center text-sm font-thin text-gray-700">
-			Svelte Commerce
+			Misiki
 		</a>
 	</div>
 	<div class="mt-4 bg-gray-800 p-4 text-white">

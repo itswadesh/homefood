@@ -9,7 +9,6 @@
 <script context="module" lang="ts">
 export async function load({ url, params, fetch, session, context }) {
 	let ref, role
-	console.log('session', session)
 	try {
 		ref = url.searchParams.get('ref')
 		role = url.searchParams.get('role') || 'user'
@@ -88,7 +87,6 @@ function toggleConfirmPassowrd() {
 let signInPromise = Promise.resolve({})
 let signUpPromise = Promise.resolve({})
 async function handleSignUp() {
-	console.log('Store details for .id check', store)
 	try {
 		const me = await signUp({
 			email,

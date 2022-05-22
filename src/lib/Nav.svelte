@@ -19,7 +19,7 @@ const cookies = new Cookies()
 import { spring } from 'svelte/motion'
 import Search from '$lib/Search.svelte'
 import { Categories } from './graphql/_kitql/graphqlTypes'
-import { KQL_Cart, KQL_Init, KQL_Me } from './graphql/_kitql/graphqlStores'
+import { KQL_Cart, KQL_Me } from './graphql/_kitql/graphqlStores'
 import { signOut } from './services'
 import { onMount } from 'svelte'
 import { toast } from './util'
@@ -58,19 +58,6 @@ onMount(async () => {
 		<a href="/" class="flex max-w-max items-center focus:outline-none">
 			<img alt="" class="h-8" src="/logo_512.png" />
 		</a>
-		<!-- {#if $KQL_Init.data?.megamenu}
-			<div
-				class="ml-8 flex w-full items-center justify-center text-sm font-semibold uppercase tracking-wide xl:ml-10">
-				{#each $KQL_Init.data?.megamenu as c}
-					<a
-						href="{`/search?categories=${c?.slug}&page=1`}"
-						class="mx-2 cursor-pointer whitespace-nowrap hover:text-primary-500 xl:mx-5"
-						class:active="{$page.url.pathname == `categories=${c.slug}&page=1`}">
-						{c?.name}
-					</a>
-				{/each}
-			</div>
-		{/if} -->
 		<div class="flex flex-row items-center">
 			<a href="/cart">
 				<button

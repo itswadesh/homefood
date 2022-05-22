@@ -79,7 +79,6 @@ let selectedPaymentMethode,
 	selectedPaymentMethod = { id: '', name: '', text: '', instructions: '', qrcode: '', img: '' }
 
 function paymentMethodChanged(pm) {
-	console.log('selected payment methode', pm)
 	selectedPaymentMethode = pm
 	errorMessage = null
 	if (selectedPaymentMethode.name === 'ABA Bank') {
@@ -95,15 +94,12 @@ function paymentMethodChanged(pm) {
 }
 
 async function submit(pm) {
-	console.log('pm = ', pm)
 	if (!pm || pm === undefined) {
 		disabled = true
 		errorMessage = 'Select a Payment Method'
 		toast('Please select a payment method', 'error')
 		return
 	}
-
-	console.log('address.id = ', address.id)
 
 	const paymentMethod = pm.value
 	const paymentMethod2 = pm.name
@@ -121,8 +117,6 @@ async function submit(pm) {
 					}
 				})
 			).data?.checkout
-
-			console.log('res = ', res)
 
 			if (res?.paymentReferenceId && res?.paymentReferenceId !== null) {
 				goto(`/payment/success?order_id=${res?.id}&payment_reference_id=${res?.paymentReferenceId}`)

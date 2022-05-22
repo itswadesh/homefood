@@ -15,19 +15,20 @@ export async function load({ url, params, fetch, session, context }) {
 	const me = session.me
 	try {
 		const domain = session.domain
-		let uri = new URL(`${process.env.VITE_WWW_URL}/api/init?domain=${domain}`)
-		let res = await fetch(uri.toString(), { method: 'get' })
-		if (res.ok) {
-			let store = await res.json()
-			const { id, email, address, phone, websiteName, websiteLegalName } = store?.storeOne
-			coookies.set(
-				'store',
-				JSON.stringify({ id, domain, address, phone, email, websiteName, websiteLegalName }),
-				{
-					path: '/'
-				}
-			)
-		}
+		// let uri = new URL(`${process.env.VITE_WWW_URL}/api/init?domain=${domain}`)
+		// let res = await fetch(uri.toString(), { method: 'get' })
+		// if (res.ok) {
+		// 	let store = await res.json()
+		const storeOne = (await KQL_StoreOne.query({ variables: { domain } })).data.storeOne
+		const { id, email, address, phone, websiteName, websiteLegalName } = storeOne
+		coookies.set(
+			'store',
+			JSON.stringify({ id, domain, address, phone, email, websiteName, websiteLegalName }),
+			{
+				path: '/'
+			}
+		)
+		// }
 	} catch (e) {}
 	return {
 		props: {
@@ -46,11 +47,11 @@ export async function load({ url, params, fetch, session, context }) {
 import PageTransitions from '$lib/PageTransitions.svelte'
 import { ToastContainer, FlatToast } from 'svelte-toasts'
 import GoogleAnalytics from '$lib/components/GoogleAnalytics.svelte'
-import { signOut, getUser, setStoreDetailsCookie } from '$lib/services'
+import { signOut, getUser } from '$lib/services'
 import { browser } from '$app/env'
 import { getStores, navigating, page, session } from '$app/stores'
 import Footer from '$lib/Footer.svelte'
-import { KQL__Init } from '$lib/graphql/_kitql/graphqlStores'
+import { KQL_StoreOne, KQL__Init } from '$lib/graphql/_kitql/graphqlStores'
 KQL__Init()
 
 let url

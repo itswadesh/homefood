@@ -20,21 +20,20 @@
 export async function load({ url, params, fetch, session, context }) {
 	const isHome = url.pathname === '/'
 	let me = session.me
-	KQL_Init.queryLoad({ fetch })
 	return {
 		props: {
 			url,
 			me,
 			isHome,
-			store: session.store,
-		},
+			store: session.store
+		}
 	}
 }
 </script>
 
 <script>
 import '../app.css'
-import { KQL_Init, KQL__Init } from '$lib/graphql/_kitql/graphqlStores'
+import { KQL__Init } from '$lib/graphql/_kitql/graphqlStores'
 KQL__Init()
 import { ToastContainer, FlatToast } from 'svelte-toasts'
 import { getStores, navigating, page, session } from '$app/stores'

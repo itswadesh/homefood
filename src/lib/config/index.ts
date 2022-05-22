@@ -19,8 +19,8 @@ const authorInfo = {
 	entity: 'Misiki',
 	ogLanguage: 'en_US',
 	siteLanguage: 'en-US',
-	siteTitle: ' - Svelte Commerce',
-	siteShortTitle: ' - Svelte Commerce', // used as SchemaOrg siteTitleAlt
+	siteTitle: ' - Misiki',
+	siteShortTitle: ' - Misiki', // used as SchemaOrg siteTitleAlt
 	contactEmail: 'swadesh@misiki.in',
 	facebookAuthorPage: `https://www.facebook.com/itswadesh`,
 	facebookPage: `https://www.facebook.com/codenx`,
