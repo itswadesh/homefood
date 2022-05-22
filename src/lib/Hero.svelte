@@ -1,74 +1,88 @@
+<style scoped>
+.backgroundimg {
+	background: url('/food.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: 50%;
+}
+.height {
+	height: 30vh;
+	width: 100%;
+}
+
+.heading {
+	margin-top: -90px;
+	padding-bottom: 13px;
+	font-size: 25px;
+	/* color: snow; */
+	text-align: center;
+}
+.link {
+	outline: none;
+	text-decoration: none;
+	position: relative;
+	font-size: 25px;
+	line-height: 1;
+	color: snow;
+	display: inline-block;
+}
+.link--move {
+	/* text-transform: uppercase; */
+	font-weight: 900;
+	overflow: hidden;
+	line-height: 0.75;
+	color: snow;
+}
+.title {
+	padding: 1rem;
+	background-color: rgba(0, 0, 0, 0.5);
+	width: 350px;
+	font-size: 2rem;
+}
+
+.link--move:hover {
+	color: #77f0f6;
+}
+.link--move::after {
+	content: '';
+	position: absolute;
+	height: 16px;
+	width: 100%;
+	top: 50%;
+	margin-top: -8px;
+	right: 0;
+	background: rgba(235, 109, 37, 0.5);
+	transform: translate3d(-100%, 0, 0);
+	transition: transform 0.4s;
+	transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.link--move:hover::after {
+	transform: translate3d(100%, 0, 0);
+}
+.link--move::before {
+	content: attr(data-letters);
+	position: absolute;
+	z-index: 2;
+	overflow: hidden;
+	color: #424242;
+	white-space: nowrap;
+	width: 0%;
+	transition: width 0.4s 0.3s;
+}
+.link--kukuri:hover::before {
+	width: 100%;
+}
+</style>
+
 <script>
-import { Swipe, SwipeItem } from 'svelte-swipe'
-import { onMount } from 'svelte'
-
-const swipeConfig = {
-	autoplay: false,
-	delay: 2000,
-	showIndicators: true,
-	transitionDuration: 1000,
-	defaultIndex: 0
-}
-let SwipeComp
-
-function nextSlide() {
-	SwipeComp.nextItem()
-}
-
-function prevSlide() {
-	SwipeComp.prevItem()
-}
-
-export let banners = []
-
-let heroBanners = []
-
-onMount(async () => {
-	heroBanners = banners?.filter((b) => {
-		return b.type === 'slider'
-	})
-})
+let loading = false
+export let closed = false
 </script>
 
-<div class="relative h-36 md:h-48 lg:h-60 xl:h-96">
-	<Swipe {...swipeConfig} bind:this="{SwipeComp}">
-		{#each heroBanners as b, i}
-			<SwipeItem>
-				<a href="/search" class="w-full">
-					<img src="{`${b.imgCdn}`}" alt="" class="w-full" />
-					<!-- <img
-						src="/ETP-banner-for-ecommerce.jpg"
-						alt="banner"
-						class="w-full xl:h-full object-cover" /> -->
-				</a>
-			</SwipeItem>
-		{/each}
-	</Swipe>
-	<button
-		class="hidden md:block absolute left-4 md:top-20 lg:top-24 xl:top-40 z-10  bg-white px-2 py-2 rounded-full border-2 hover:bg-gray-200 focus:outline-none"
-		type="button"
-		on:click="{prevSlide}">
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			class="h-6 w-6"
-			fill="none"
-			viewBox="0 0 24 24"
-			stroke="currentColor">
-			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"
-			></path>
-		</svg>
-	</button>
-	<button
-		class="hidden md:block absolute right-4 md:top-20 lg:top-24 xl:top-40 z-10 bg-white px-2 py-2 rounded-full border-2 hover:bg-gray-200 focus:outline-none"
-		type="button"
-		on:click="{nextSlide}">
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			class="h-6 w-6"
-			fill="none"
-			viewBox="0 0 24 24"
-			stroke="currentColor">
-			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-		</svg>
-	</button>
-</div>
+<body>
+	<div class="backgroundimg height"></div>
+	<div class="heading">
+		<div class="link link--move title" data-letters="Foodfire">Foodfire</div>
+	</div>
+</body>
