@@ -28,6 +28,8 @@ import { store, toast } from '$lib/util'
 import ProductDetailSkeleton from '../[slug]/_ProductDetailSkeleton.svelte'
 import Errors from '$lib/components/alerts/Errors.svelte'
 import Skeleton from '$lib/ui/Skeleton.svelte'
+import CartBar from '$lib/CartBar.svelte'
+import FixedCheckoutBar from '$lib/FixedCheckoutBar.svelte'
 let show, addingToBag
 function toggle() {
 	show = !show
@@ -186,3 +188,4 @@ $: cart = $KQL_Cart.data?.cart || {}
 		</div>
 	{/if}
 </section>
+<!-- <FixedCheckoutBar /> -->

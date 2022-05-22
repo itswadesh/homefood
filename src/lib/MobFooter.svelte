@@ -25,7 +25,7 @@ let footerMenu = [
             d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'
           />
         </svg>
-      `,
+      `
 	},
 	{
 		name: 'Stores',
@@ -45,7 +45,7 @@ let footerMenu = [
             d='M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z'
           />
         </svg>
-      `,
+      `
 	},
 	{
 		name: 'Wishlist',
@@ -65,7 +65,7 @@ let footerMenu = [
             d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
           />
         </svg>
-      `,
+      `
 	},
 	{
 		name: 'Bag',
@@ -85,7 +85,7 @@ let footerMenu = [
             d='M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z'
           />
         </svg>
-      `,
+      `
 	},
 	{
 		name: 'Account',
@@ -105,14 +105,14 @@ let footerMenu = [
             d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
           />
         </svg>
-      `,
-	},
+      `
+	}
 ]
 </script>
 
 <section class="frosted shadow-inner">
 	<div class="flex items-center justify-between">
-		{#each footerMenu as item, i}
+		<!-- {#each footerMenu as item, i}
 			<a
 				href="{item.link}"
 				class=" cursor-pointer group py-1 hover:bg-gray-200 focus:outline-none w-20">
@@ -124,6 +124,6 @@ let footerMenu = [
 					{item.name}
 				</h3>
 			</a>
-		{/each}
+		{/each} -->
 	</div>
 </section>

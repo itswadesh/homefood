@@ -27,7 +27,7 @@ function changeCountry() {
 }
 </script>
 
-<div class="bg-gray-800">
+<!-- <div class="bg-gray-800">
 	<div
 		class="container max-w-lg mx-auto p-5 sm:p-10 flex flex-col text-white text-center tracking-wide">
 		<h1 class="mb-2 text-lg font-bold uppercase">{store?.domain}</h1>
@@ -97,4 +97,4 @@ function changeCountry() {
 			<a href="/p/blog" title="Blog" class="hover:underline"> Blog </a>
 		</div>
 	</div>
-</div>
+</div> -->
