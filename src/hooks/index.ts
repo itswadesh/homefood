@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid'
 export const handle: Handle = async ({ event, resolve }) => {
 	let store, cart, headers, serializedCookie, settings, megamenu, sid, token, domain, geo, me
 	// me.gql and cart.gql can not be called here because of unabailability of session cookie. Hence there are executed at __layout.reset.svelte or $lib/Nav.svelte
-	console.log('DOMAIN FROM ENV VARIABLE VITE_DOMAIN', DOMAIN, process.env.VITE_DOMAIN)
 	const request = event.request
 	const cookies = cookie.parse(request.headers.get('cookie') || '') || {}
 	event.locals['kitqlCartId'] = cookies.kitqlCartId || uuidv4()
@@ -23,7 +22,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 			sid = cookies.sid
 			token = cookies.token
 		}
-	} catch (e) {}
+	} catch (e) {
+		console.log('Init err.............', e)
+	}
 	if (event.url.searchParams.has('_method')) {
 		event.method = event.url.searchParams.get('_method').toUpperCase()
 	}
