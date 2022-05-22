@@ -43,6 +43,7 @@ import Products from '$lib/Products.svelte'
 import Overlay from '$lib/Overlay.svelte'
 import CartBar from '$lib/CartBar.svelte'
 import { get } from '$lib/util/api'
+import SEO from '$lib/components/SEO/index.svelte'
 const seoProps = {
 	title: 'Misiki Food | Homemade',
 	metadescription: 'Home made food home delivered by Misiki'
