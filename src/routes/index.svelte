@@ -3,12 +3,18 @@ import Cookie from 'cookie-universal'
 const cookies = Cookie()
 
 export async function load({ url, params, fetch, session, context, cookie }) {
-	let err, count, products, facets, currentLocation
+	let err, count, products, facets, currentLocation, cart
 	let currentPage = url.searchParams.get('page') || 1
 	let sort = url.searchParams.get('sort')
 	let searchData = url.searchParams.get('q')
 	let location = url.searchParams.get('location')
 	let query = url.searchParams
+	try {
+		// await KQL_Cart.resetCache()
+		cart = (await KQL_Cart.query({ fetch, variables: { store: store.id } })).data.cart || {}
+	} catch (e) {
+		throw Error(e)
+	}
 	return {
 		props: {
 			err,
@@ -20,7 +26,8 @@ export async function load({ url, params, fetch, session, context, cookie }) {
 			facets,
 			query,
 			searchData,
-			currentLocation
+			currentLocation,
+			cart
 		}
 	}
 }
@@ -29,7 +36,7 @@ export async function load({ url, params, fetch, session, context, cookie }) {
 <script>
 import Hero from '$lib/Hero.svelte'
 // import SEO from '$lib/components/SEO/index.svelte'
-import { KQL_Home, KQL_Products } from '$lib/graphql/_kitql/graphqlStores'
+import { KQL_Cart, KQL_Home, KQL_Products } from '$lib/graphql/_kitql/graphqlStores'
 import { onMount } from 'svelte'
 import ProductCard from '$lib/components/_ProductCard.svelte'
 import { store } from '$lib/util'
@@ -52,7 +59,8 @@ export let banners,
 	featuredProducts = null,
 	hotProducts = null,
 	shoppoProducts = null,
-	query
+	query,
+	cart
 
 let products = [],
 	count,
@@ -84,7 +92,7 @@ onMount(async () => {
 		{#if loading}
 			<Skeleton />
 		{:else}
-			<Products products="{products}" showcart="{true}" />
+			<Products products="{products}" showcart="{true}" cart="{cart}" />
 		{/if}
 		<Overlay closed="{store.closed}" />
 		<CartBar />

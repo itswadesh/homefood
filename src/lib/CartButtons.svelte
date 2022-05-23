@@ -81,29 +81,15 @@
 }
 </style>
 
-<script context="module" lang="ts">
-export async function load({ url, params, fetch }) {
-	let cart
-	try {
-		await KQL_Cart.resetCache()
-		await KQL_Cart.queryLoad({ fetch, variables: { store: store.id } })
-		return {
-			props: {}
-		}
-	} catch (e) {
-		throw Error(e)
-	}
-}
-</script>
-
 <script>
 import { KQL_AddToCart, KQL_Cart } from './graphql/_kitql/graphqlStores'
 import { Cart } from './graphql/_kitql/graphqlTypes'
 import { store, toast } from './util'
 
-export let product
+export let product, cart
+let loading = false
 function checkCart(pid) {
-	return cart.items?.some((e) => e.pid === pid)
+	return cart?.items?.some((e) => e.pid === pid)
 }
 function getQty(pid) {
 	const found = cart.items?.find((e) => e.pid === pid)
@@ -117,21 +103,24 @@ async function refreshCart() {
 async function addToCart({ pid, vid, options, qty }) {
 	const optiData = $KQL_Cart.data
 	optiData.cart.currencyCode = `Removing items...`
+	loading = true
 	const addToCartRes = await KQL_AddToCart.mutate({
 		variables: { pid, qty, vid, options }
 	})
+	loading = false
 	if (addToCartRes.errors) {
 		return toast(addToCartRes.errors[0].message.replace('UserInputError: ', ''), 'error')
 	}
 	if (qty < 1) toast('Removed from cart', 'success')
 	else toast('Added to the cart', 'success')
-	await KQL_Cart.queryLoad({ variables: { store: store.id }, settings: { policy: 'network-only' } })
+	cart = addToCartRes.data.addToCart
+	await KQL_Cart.query({ variables: { store: store.id }, settings: { policy: 'network-only' } })
 }
-$: cart = $KQL_Cart.data?.cart || {}
+// $: cart = $KQL_Cart.data?.cart || {}
 </script>
 
 <div class="align">
-	{#if cart.items && !checkCart(product.id)}
+	{#if cart?.items && !checkCart(product.id)}
 		<button
 			on:click="{() =>
 				addToCart({
@@ -148,6 +137,7 @@ $: cart = $KQL_Cart.data?.cart || {}
 		<div>
 			<div class="size1">
 				<button
+					disabled="{loading}"
 					class="button1 buttonrounded1 "
 					on:click="{() =>
 						addToCart({
@@ -158,8 +148,11 @@ $: cart = $KQL_Cart.data?.cart || {}
 						})}">
 					<img src="/minus.svg" alt="" />
 				</button>
-				<span class="size2">{cart.items?.find((e) => e.pid === product.id).qty}</span>
+				<span class="size2">
+					{loading ? '...' : cart?.items?.find((e) => e.pid === product.id).qty}
+				</span>
 				<button
+					disabled="{loading}"
 					class="button1 button.is-danger buttonrounded1 btnplus-clr"
 					on:click="{() =>
 						addToCart({

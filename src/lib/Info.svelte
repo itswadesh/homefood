@@ -68,7 +68,9 @@ p {
 </style>
 
 <script>
-import { currency } from './util'
+import { KQL_Settings } from './graphql/_kitql/graphqlStores'
+
+import { currency, store } from './util'
 </script>
 
 <div>
@@ -98,11 +100,14 @@ import { currency } from './util'
 							</div>
 						</div>
 					</div>
-					<!-- <div class="green">
+					<a
+						href="{$KQL_Settings.data?.settings?.ADMIN_PANEL_LINK}?role=vendor&store=${store.id}"
+						target="_blank"
+						class="green block py-2 hover:bg-gray-200">
 						<center>
-							<b>Delivery is now open</b>
+							<b>Join as Chef</b>
 						</center>
-					</div> -->
+					</a>
 				</div>
 			</div>
 		</section>

@@ -107,16 +107,17 @@ strong {
 
 <script>
 import CartButtons from './CartButtons.svelte'
+import ImageLoader from './components/Image/ImageLoader.svelte'
 
 import { currency } from './util'
-export let products, showcart
+export let products, showcart, cart
 </script>
 
 <div class="products head">
 	{#each products as p, ix}
-		<div class="product {ix !== 0 ? 'border' : ''}">
+		<div class="product {ix !== 0 || ix !== products.length ? 'pb-3 border-b' : ''}">
 			<div class="image">
-				<img src="{p._source.img}" alt="" class="h-24 w-24 p-1 shadow" />
+				<ImageLoader src="{p._source.img}" alt="" class="h-24 w-24 rounded-full p-1 shadow-lg" />
 			</div>
 			<div class="content">
 				<strong>{p._source.name}</strong>
@@ -130,16 +131,16 @@ export let products, showcart
 			<div class="price-align">
 				<div class="big">{currency(p._source.price)}</div>
 				{#if showcart}
-					<CartButtons product="{{ id: p._id }}" />
+					<CartButtons product="{{ id: p._id }}" cart="{cart}" />
 				{/if}
 			</div>
 		</div>
 	{/each}
 	{#each products as p, ix}
-		<div class="webcard {ix != 0 ? 'border' : ''}">
+		<div class="webcard {ix != 0 || ix !== products.length ? 'pb-3 border-b' : ''}">
 			<div class="webcolumn">
 				<div class="image">
-					<img src="{p._source.img}" alt="" class="h-24 w-24 p-1 shadow" />
+					<ImageLoader src="{p._source.img}" alt="" class="h-24 w-24 rounded-full p-1 shadow-lg" />
 				</div>
 				<div class="content">
 					<div>
