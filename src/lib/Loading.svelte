@@ -20,7 +20,8 @@ div#wave {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(255, 255, 255, 0.8);
+	backdrop-filter: blur(5px);
+	background-color: rgba(255, 255, 255, 0.5);
 	text-align: center;
 	padding-top: 200px;
 	z-index: 10000;
@@ -61,10 +62,13 @@ div#wave .dot:nth-child(5) {
 
 <script>
 export let active = false
+
 let loading = false
+
 function start() {
 	loading = true
 }
+
 function finish() {
 	loading = false
 }
@@ -73,8 +77,11 @@ function finish() {
 {#if loading || active}
 	<div id="wave">
 		<span class="dot olive"></span>
+
 		<span class="dot blue"></span>
+
 		<span class="dot green"></span>
+
 		<span class="dot red"></span>
 	</div>
 {/if}

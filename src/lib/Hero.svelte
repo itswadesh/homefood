@@ -1,15 +1,14 @@
 <style scoped>
 .backgroundimg {
-	background: url('/food.jpg');
+	background: url('/food-home-banner.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: 50%;
+	background-position: center;
 }
 .height {
-	height: 30vh;
+	height: 50vh;
 	width: 100%;
 }
-
 .heading {
 	margin-top: -90px;
 	padding-bottom: 13px;
@@ -39,9 +38,8 @@
 	width: 350px;
 	font-size: 2rem;
 }
-
 .link--move:hover {
-	color: #77f0f6;
+	color: #b5d2f8;
 }
 .link--move::after {
 	content: '';
@@ -77,11 +75,13 @@
 
 <script>
 let loading = false
+
 export let closed = false
 </script>
 
 <body>
 	<div class="backgroundimg height"></div>
+
 	<div class="heading">
 		<div class="link link--move title" data-letters="Misiki">Misiki</div>
 	</div>
