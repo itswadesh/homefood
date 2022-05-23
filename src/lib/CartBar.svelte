@@ -124,9 +124,13 @@ $: cart = $KQL_Cart.data?.cart || {}
 			<nav class="navbar header has-shadow is-primary">
 				<div class="headeralign1 shadow" style="color:white;">
 					<div style="padding-left: 13px;">
-						<span>
-							{cart.qty} item{#if cart.qty > 1}s{/if} | {currency(cart.total)}
-						</span>
+						{#if $KQL_Cart.isFetching}
+							<span>Please wait...</span>
+						{:else}
+							<span>
+								{cart.qty} item{#if cart.qty > 1}s{/if} | {currency(cart.total)}
+							</span>
+						{/if}
 					</div>
 					<div class="navbar-brand1 ">
 						<a class="navbar-item1 a1 " style="color:white" href="/cart">
