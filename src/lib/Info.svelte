@@ -81,22 +81,10 @@ import { currency, store } from './util'
 					<div class="webrow">
 						<div class="columns is-mobile">
 							<div class="column">
-								<p class="grey">Home made food</p>
-								<div>Home delivered</div>
+								<p class="grey">Home made food, Home delivered</p>
 							</div>
 							<div class="column pl-10">
-								<p class="grey">Delivery free</p>
-								<div class="w-132">above {currency(899)}</div>
-							</div>
-						</div>
-						<div class="columns is-mobile">
-							<div class="column">
-								<p class="grey">Delivery hours</p>
-								<div class="w-132">11:30AM - 09:30PM</div>
-							</div>
-							<div class="column pl-10">
-								<p class="grey">Minimum order</p>
-								<div>{currency(0)}</div>
+								<p class="grey">Delivery only to Sunabeda Township</p>
 							</div>
 						</div>
 					</div>

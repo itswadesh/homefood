@@ -120,11 +120,33 @@ export let products, showcart, cart
 				<ImageLoader src="{p._source.img}" alt="" class="h-24 w-24 rounded-full p-1 shadow-lg" />
 			</div>
 			<div class="content">
-				<strong>{p._source.name}</strong>
+				<div class="flex items-center justify-start">
+					<strong>{p._source.name}</strong>
+					<div class="ms-2">
+						{#if p._source.foodType === 'V'}
+							<img src="{`/product/veg.png`}" alt="veg" class="h-5 w-5" />
+						{:else if p._source.foodType === 'N' || p._source.foodType === 'E'}
+							<img src="{`/product/non-veg.png`}" alt="non veg" class="h-5 w-5" />
+						{:else}
+							<img src="{`/product/other.png`}" alt="other" class="h-5 w-5" />
+						{/if}
+					</div>
+					<div class="ms-2">
+						{#if p._source?.tags?.length}
+							{#each p._source?.tags as tag}
+								<span
+									class="rounded px-1 py-0.5 text-xs  text-white me-2"
+									style="background-color:{tag.colorCode}">{tag.name}</span>
+							{/each}
+						{/if}
+					</div>
+				</div>
 				<div class="text-xs">
 					{#if p._source.vendor.businessName}
 						by <span class="text-gray-500">{p._source.vendor.businessName || ''}</span>
-						<!-- href="{`/vendor/${p._source.vendor.slug}?id=${p._source.vendor.id}`}" -->
+					{/if}
+					{#if p._source.description}
+						<span class="text-gray-500">{@html p._source.description || ''}</span>
 					{/if}
 				</div>
 			</div>
@@ -143,8 +165,24 @@ export let products, showcart, cart
 					<ImageLoader src="{p._source.img}" alt="" class="h-24 w-24 rounded-full p-1 shadow-lg" />
 				</div>
 				<div class="content">
-					<div>
+					<div class="flex items-center justify-start">
 						<strong class="f-12">{p._source.name}</strong>
+						<div class="ms-2">
+							{#if p._source.foodType === 'V'}
+								<img src="{`/product/veg.png`}" alt="veg" class="h-5 w-5" />
+							{:else if p._source.foodType === 'N' || p._source.foodType === 'E'}
+								<img src="{`/product/non-veg.png`}" alt="non veg" class="h-5 w-5" />
+							{:else}
+								<img src="{`/product/other.png`}" alt="other" class="h-5 w-5" />
+							{/if}
+						</div>
+						<div class="ms-2">
+							{#if p._source?.tags?.length}
+								{#each p._source?.tags as tag}
+									<span class="text-gray-500 me-2">{tag}</span>
+								{/each}
+							{/if}
+						</div>
 					</div>
 					<div class="webprice">
 						<div class="big">{currency(p._source.price)}</div>
