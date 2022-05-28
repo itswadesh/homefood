@@ -129,9 +129,13 @@ async function addToCart({ pid, vid, options, qty }) {
 					options: [],
 					qty: 1
 				})}">
-			<div class="button1 buttonrounded1 btnalign">
-				<img src="/plus.svg" alt="" />
-			</div>
+			{#if loading}
+				{loading ? '...' : cart?.items?.find((e) => e.pid === product.id).qty}
+			{:else}
+				<div class="button1 buttonrounded1 btnalign">
+					<img src="/plus.svg" alt="" />
+				</div>
+			{/if}
 		</button>
 	{:else}
 		<div>

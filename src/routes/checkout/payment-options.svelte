@@ -43,6 +43,7 @@ import SEO from '$lib/components/SEO/index.svelte'
 import {
 	KQL_Address,
 	KQL_Cart,
+	KQL_CashfreePayNowNew,
 	KQL_Checkout,
 	KQL_PaymentMethods
 } from '$lib/graphql/_kitql/graphqlStores'
@@ -65,8 +66,7 @@ const seoProps = {
 
 export let loading, err, paymentMethods, address, prescription, addressId
 
-let selectedPaymentMethode,
-	errorMessage = 'Select a Payment Method',
+let errorMessage = 'Select a Payment Method',
 	disabled = true,
 	showPayWithBankTransfer = false,
 	bankPayment = {
@@ -79,9 +79,9 @@ let selectedPaymentMethode,
 	selectedPaymentMethod = { id: '', name: '', text: '', instructions: '', qrcode: '', img: '' }
 
 function paymentMethodChanged(pm) {
-	selectedPaymentMethode = pm
+	selectedPaymentMethod = pm
 	errorMessage = null
-	if (selectedPaymentMethode.name === 'ABA Bank') {
+	if (selectedPaymentMethod.name === 'ABA Bank') {
 		showPayWithBankTransfer = true
 		selectedPaymentMethod = pm
 	}
@@ -104,16 +104,15 @@ async function submit(pm) {
 	const paymentMethod = pm.value
 	const paymentMethod2 = pm.name
 	// console.log('paymentMethod = ', paymentMethod)
+	// const vm = this
 	if (paymentMethod === 'COD') {
 		try {
 			loading = true
 
 			const res = (
 				await KQL_Checkout.mutate({
-					fetch,
 					variables: {
-						address: address.id,
-						paymentMethod: 'COD'
+						address: address.id
 					}
 				})
 			).data?.checkout
@@ -128,11 +127,26 @@ async function submit(pm) {
 		} finally {
 			loading = false
 		}
+	} else if (paymentMethod === 'Cashfree') {
+		if (loading) return
+		try {
+			loading = true
+			const cashFreePayload = (
+				await KQL_CashfreePayNowNew.mutate({
+					variables: { address: address.id }
+				})
+			).data.cashfreePayNowNew
+			if (!cashFreePayload) {
+				toast('Cashfree not available', 'error')
+				return
+			}
+			const url = cashFreePayload.redirectUrl
+			window.location.href = url
+		} catch (e) {
+		} finally {
+			loading = false
+		}
 	}
-
-	// else {
-	// 	toast('Only COD is now available', 'info')
-	// }
 }
 
 function cancelBankModal() {
@@ -157,7 +171,7 @@ function cancelBankModal() {
 						<label
 							class="flex w-full cursor-pointer items-center gap-2 rounded-md border border-gray-300 p-4 shadow-md transition duration-300 hover:bg-primary-50 sm:gap-4">
 							<input
-								bind:group="{selectedPaymentMethode}"
+								bind:group="{selectedPaymentMethod}"
 								type="radio"
 								value="{pm}"
 								name="group"
@@ -277,8 +291,8 @@ function cancelBankModal() {
 			<Pricesummary
 				text="{errorMessage || 'Confirm Order'}"
 				loading="{loading}"
-				disabled="{!selectedPaymentMethode && disabled}"
-				on:submit="{() => submit(selectedPaymentMethode)}" />
+				disabled="{!selectedPaymentMethod && disabled}"
+				on:submit="{() => submit(selectedPaymentMethod)}" />
 		</div>
 	</div>
 </div>

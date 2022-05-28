@@ -2781,6 +2781,55 @@ function KQL_PaySuccessPageHitStore() {
  */
 export const KQL_PaySuccessPageHit = KQL_PaySuccessPageHitStore();
 
+function KQL_CashfreePayNowNewStore() {
+	const operationName = 'KQL_CashfreePayNowNew';
+	const operationType = ResponseResultType.Mutation;
+
+	// prettier-ignore
+	const { subscribe, set, update } = writable<RequestResult<Types.CashfreePayNowNewMutation, Types.CashfreePayNowNewMutationVariables>>({...defaultStoreValue, operationName, operationType});
+
+		async function mutateLocal(
+			params?: RequestParameters<Types.CashfreePayNowNewMutationVariables>
+		): Promise<RequestResult<Types.CashfreePayNowNewMutation, Types.CashfreePayNowNewMutationVariables>> {
+			let { fetch, variables } = params ?? {};
+
+			const storedVariables = get(KQL_CashfreePayNowNew).variables;
+			variables = variables ?? storedVariables;
+
+			update((c) => {
+				return { ...c, isFetching: true, status: RequestStatus.LOADING };
+			});
+
+			// prettier-ignore
+			const res = await kitQLClient.request<Types.CashfreePayNowNewMutation, Types.CashfreePayNowNewMutationVariables>({
+				skFetch: fetch,
+				document: Types.CashfreePayNowNewDocument,
+				variables, 
+				operationName, 
+				operationType, 
+				browser
+			});
+			const result = { ...res, isFetching: false, status: RequestStatus.DONE, variables };
+			set(result);
+			return result;
+		}
+
+	return {
+		subscribe,
+
+		/**
+		 * Can be used for SSR, but simpler option is `.queryLoad`
+		 * @returns fill this store & the cache
+		 */
+		mutate: mutateLocal,
+
+	};
+}
+/**
+ * KitQL Svelte Store with the latest `CashfreePayNowNew` Operation
+ */
+export const KQL_CashfreePayNowNew = KQL_CashfreePayNowNewStore();
+
 function KQL_DeletePaymentMethodStore() {
 	const operationName = 'KQL_DeletePaymentMethod';
 	const operationType = ResponseResultType.Mutation;

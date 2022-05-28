@@ -16,10 +16,10 @@
 				d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"
 			></path>
 		</svg>
-		<h5 class="mt-2 font-semibold ">Free Shipping*</h5>
+		<h5 class="mt-2 font-semibold ">Free Shipping</h5>
 		<h5 class="mt-2 text-xs">
-			On order of ₹899 and above. <span class="cursor-pointer underline hover:text-black"
-				>Details</span>
+			<!-- On order of ₹899 and above. <span class="cursor-pointer underline hover:text-black"
+				>Details</span> -->
 		</h5>
 	</div>
 	<!-- 1st box end  -->
@@ -63,7 +63,7 @@
 			></path>
 		</svg>
 		<h5 class="mt-2 font-semibold ">Secure shopping</h5>
-		<h5 class="mt-2 text-xs">Your payment details are fully encrypted</h5>
+		<h5 class="mt-2 text-xs">Your details are fully encrypted</h5>
 	</div>
 	<!-- 3rd box end  -->
 </section>

@@ -155,10 +155,10 @@ function submit() {
 			<h4>FREE</h4>
 		</div>
 
-		<p class="d mt-1 text-xs tracking-wider text-gray-400">
+		<!-- <p class="d mt-1 text-xs tracking-wider text-gray-400">
 			Free shipping on orders of ₹899 or more. For first purchase,
 			<a href="/" class="underline hover:text-primary-500">See Offer</a>
-		</p>
+		</p> -->
 	</div>
 
 	<hr class="my-5 border-t border-dashed border-gray-200" />
