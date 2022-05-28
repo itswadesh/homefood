@@ -62,8 +62,8 @@
 
 <script context="module" lang="ts">
 export async function load({ url, params, fetch, session, context }) {
-	let orderId = url.searchParams.get('order_id')
-	let paymentReferenceId = url.searchParams.get('payment_reference_id')
+	let orderId = url.searchParams.get('id')
+	let paymentReferenceId = url.searchParams.get('paymentReferenceId')
 	let addressId = url.searchParams.get('address')
 	let loading, err, address, order
 
