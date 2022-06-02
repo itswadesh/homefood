@@ -75,7 +75,8 @@ async function handleVerifyOtp(detail) {
 		loading = true
 		// console.log(detail)
 		const otp = `${detail.detail}`
-		const data = (await KQL_VerifyOtp.mutate({ variables: { phone, otp } })).data?.verifyOtp
+		const data = (await KQL_VerifyOtp.mutate({ variables: { phone, otp, store: store.id } })).data
+			?.verifyOtp
 		if ($KQL_VerifyOtp.errors) toast($KQL_VerifyOtp.errors[0].message, 'error')
 		else {
 			const me = {
