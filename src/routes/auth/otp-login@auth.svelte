@@ -60,7 +60,7 @@ async function handleSendOTP(detail) {
 	try {
 		loading = true
 		phone = detail.detail
-		const { data } = await KQL_GetOtp.mutate({ variables: { phone } })
+		const { data } = await KQL_GetOtp.mutate({ variables: { phone, store: store.id } })
 		resendAfter = data?.getOtp?.timer
 		otpRequestSend = true
 	} catch (e) {
