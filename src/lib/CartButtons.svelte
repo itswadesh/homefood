@@ -1,89 +1,8 @@
-<style>
-.size1 {
-	display: flex;
-	flex-direction: row;
-}
-.size2 {
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 5px;
-}
-.buttonrounded1 {
-	border-radius: 50px;
-	width: 33px;
-}
-.button.is-danger {
-	border-color: transparent;
-	color: #fff;
-}
-.button1 {
-	border: 1px solid transparent;
-	border-width: 1px;
-	color: #32325d;
-	cursor: pointer;
-	justify-content: center;
-	text-align: center;
-	white-space: nowrap;
-	background: #f5f5f5;
-	box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-.btnplus-clr {
-	background: #ffdd57;
-}
-.button1:hover {
-	background: #ffdd57;
-}
-.button {
-	border: 1px solid transparent;
-	border-width: 1px;
-	color: #32325d;
-	background-color: white;
-	cursor: pointer;
-	justify-content: center;
-	padding: calc(0.375em - 1px) 0.75em;
-	padding-bottom: 0px;
-	text-align: center;
-	white-space: nowrap;
-	display: flex;
-	flex-direction: row;
-	box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-.button:hover {
-	background: #ff3860;
-	color: #fff;
-}
-.buttonrounded {
-	border-radius: 15px;
-	height: 34px;
-	border-left-width: 2px;
-}
-.align {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding-top: 10px;
-}
-/* .plus {
-  font-size: 25px;
-  margin-top: -3px;
-} */
-.cart-icon {
-	padding-bottom: 3px;
-	padding-left: 5px;
-}
-/* .center {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-} */
-.addalign {
-	padding-top: 4px;
-}
-</style>
-
 <script>
+import ImageLoader from './components/Image/ImageLoader.svelte'
 import { KQL_AddToCart, KQL_Cart } from './graphql/_kitql/graphqlStores'
 import { Cart } from './graphql/_kitql/graphqlTypes'
+import PrimaryButton from './ui/PrimaryButton.svelte'
 import { store, toast } from './util'
 
 export let product, cart
@@ -119,9 +38,84 @@ async function addToCart({ pid, vid, options, qty }) {
 // $: cart = $KQL_Cart.data?.cart || {}
 </script>
 
-<div class="align">
-	{#if cart?.items && !checkCart(product.id)}
+{#if cart?.items && !checkCart(product.id)}
+	<!-- Plus Button -->
+
+	<PrimaryButton
+		loadingringsize="xs"
+		loading="{loading}"
+		class="whitespace-nowrap py-1 text-xs font-medium"
+		on:click="{() =>
+			addToCart({
+				pid: product.id,
+				vid: product.id,
+				options: [],
+				qty: 1
+			})}">
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			class="h-4 w-4"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			stroke-width="2">
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+			></path>
+		</svg>
+
+		<span> Add to Cart </span>
+	</PrimaryButton>
+{:else}
+	<div class="flex items-center">
+		<!-- Minus Button -->
+
 		<button
+			type="button"
+			class="flex-shrink-0 rounded-full bg-primary-50 p-2 text-gray-800 transition duration-500 hover:bg-primary-500 hover:text-white focus:outline-none"
+			on:click="{() =>
+				addToCart({
+					pid: product.id,
+					vid: product.id,
+					options: [],
+					qty: -1
+				})}">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-5 w-5 flex-shrink-0"
+				viewBox="0 0 20 20"
+				fill="currentColor">
+				<path
+					fill-rule="evenodd"
+					d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"
+					clip-rule="evenodd"></path>
+			</svg>
+		</button>
+
+		<!-- Quantity and loading -->
+
+		<div class="w-14 px-3 flex items-center justify-center">
+			{#if loading}
+				<div>
+					<ImageLoader
+						src="/dots-loading.gif"
+						alt="loading..."
+						class="h-5 w-5 object-contain object-center text-xs" />
+				</div>
+			{:else}
+				<span>
+					<b>{cart?.items?.find((e) => e.pid === product.id).qty}</b>
+				</span>
+			{/if}
+		</div>
+
+		<!-- Plus Button -->
+
+		<button
+			type="button"
+			class="flex-shrink-0 rounded-full bg-primary-50 p-2 text-gray-800 transition duration-500 hover:bg-primary-500 hover:text-white focus:outline-none"
 			on:click="{() =>
 				addToCart({
 					pid: product.id,
@@ -129,45 +123,16 @@ async function addToCart({ pid, vid, options, qty }) {
 					options: [],
 					qty: 1
 				})}">
-			{#if loading}
-				{loading ? '...' : cart?.items?.find((e) => e.pid === product.id).qty}
-			{:else}
-				<div class="button1 buttonrounded1 btnalign">
-					<img src="/plus.svg" alt="" />
-				</div>
-			{/if}
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-5 w-5 flex-shrink-0"
+				viewBox="0 0 20 20"
+				fill="currentColor">
+				<path
+					fill-rule="evenodd"
+					d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+					clip-rule="evenodd"></path>
+			</svg>
 		</button>
-	{:else}
-		<div>
-			<div class="size1">
-				<button
-					disabled="{loading}"
-					class="button1 buttonrounded1 "
-					on:click="{() =>
-						addToCart({
-							pid: product.id,
-							vid: product.id,
-							options: [],
-							qty: -1
-						})}">
-					<img src="/minus.svg" alt="" />
-				</button>
-				<span class="size2">
-					{loading ? '...' : cart?.items?.find((e) => e.pid === product.id).qty}
-				</span>
-				<button
-					disabled="{loading}"
-					class="button1 button.is-danger buttonrounded1 btnplus-clr"
-					on:click="{() =>
-						addToCart({
-							pid: product.id,
-							vid: product.id,
-							options: [],
-							qty: 1
-						})}">
-					<img src="/plus.svg" alt="" />
-				</button>
-			</div>
-		</div>
-	{/if}
-</div>
+	</div>
+{/if}

@@ -45,7 +45,7 @@ import Errors from '$lib/components/alerts/Errors.svelte'
 import HeroBanners from '$lib/HeroBanners.svelte'
 import Loading from '$lib/Loading.svelte'
 import Info from '$lib/Info.svelte'
-import Skeleton from '$lib/ui/Skeleton.svelte'
+import ProductSkeleton from '$lib/ui/ProductSkeleton.svelte'
 import Products from '$lib/Products.svelte'
 import Overlay from '$lib/Overlay.svelte'
 import CartBar from '$lib/CartBar.svelte'
@@ -87,16 +87,28 @@ onMount(async () => {
 
 <SEO {...seoProps} />
 
-<div>
-	<Loading active="{loading}" />
+<main>
+	<section>
+		<Loading active="{loading}" />
+	</section>
 
-	<div>
+	<section>
 		<Hero closed="{store.closed}" />
 
 		<Info />
 
 		{#if loading}
-			<Skeleton />
+			<div class="p-3 py-10 sm:p-10">
+				<div class="container mx-auto max-w-7xl">
+					<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-10 md:grid-cols-3">
+						{#each { length: 21 } as _}
+							<div class="col-span-1">
+								<ProductSkeleton />
+							</div>
+						{/each}
+					</div>
+				</div>
+			</div>
 		{:else}
 			<Products products="{products}" showcart="{true}" cart="{cart}" />
 		{/if}
@@ -104,5 +116,7 @@ onMount(async () => {
 		<Overlay closed="{store.closed}" />
 
 		<CartBar />
-	</div>
-</div>
+
+		<div class="h-20 w-full bg-transparent sm:h-40"></div>
+	</section>
+</main>
