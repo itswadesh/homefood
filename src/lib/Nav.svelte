@@ -111,7 +111,10 @@ onMount(async () => {
 
 					<div class="flex-shrink-0">
 						{#if me?.avatar}
-							<img src="{me?.avatar}" alt="" class="h-10 w-10 rounded-full bg-white shadow " />
+							<img
+								src="{me?.avatar}"
+								alt=""
+								class="h-10 w-10 rounded-full bg-white object-contain shadow " />
 						{:else}
 							<img
 								src="/leadership-profile.png"

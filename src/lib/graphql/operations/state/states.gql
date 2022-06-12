@@ -1,5 +1,19 @@
-query states($page: Int, $search: String, $limit: Int, $sort: String) {
-	states(page: $page, search: $search, limit: $limit, sort: $sort) {
+query states(
+	$page: Int
+	$search: String
+	$limit: Int
+	$sort: String
+	$country: ID
+	$countryCode: String
+) {
+	states(
+		page: $page
+		search: $search
+		limit: $limit
+		sort: $sort
+		country: $country
+		countryCode: $countryCode
+	) {
 		count
 		page
 		pageSize

@@ -16,7 +16,7 @@ export async function load({ url, params, fetch, session, context }) {
 		loading = true
 		const myAddressesRes = await KQL_MyAddresses.query({ fetch, settings: { cacheMs: 0 } })
 		if (myAddressesRes.errors) err = myAddressesRes.errors[0].message
-		myAddresses = myAddressesRes.data.myAddresses
+		myAddresses = myAddressesRes.data?.myAddresses
 		selectedAddress = myAddresses?.data[0]?.id
 		// console.log('selectedAddress = ', selectedAddress)
 	} catch (e) {
@@ -37,7 +37,7 @@ import Error from '$lib/Error.svelte'
 import CheckoutHeader from './_CheckoutHeader.svelte'
 
 export let loading, myAddresses, err, prescriptionId, selectedAddress
-$: myAddresses = $KQL_MyAddresses.data.myAddresses
+$: myAddresses = $KQL_MyAddresses.data?.myAddresses
 function addressChanged(detail) {
 	// console.log('detail = ', detail)
 	selectedAddress = detail.detail
