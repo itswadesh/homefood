@@ -94,13 +94,6 @@ profile .card-profile-image img {
 	justify-content: space-between;
 	align-items: center;
 }
-.footer {
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	text-align: center;
-}
 .cart-icon1 {
 	padding-right: 6px;
 	margin-top: 5px;
@@ -113,22 +106,50 @@ profile .card-profile-image img {
 </style>
 
 <script>
+import { onMount } from 'svelte'
+
+import { elasticOut } from 'svelte/easing'
+import { tweened } from 'svelte/motion'
 import { KQL_Cart } from './graphql/_kitql/graphqlStores'
 import { currency } from './util'
+import { spring } from 'svelte/motion'
+import { fly } from 'svelte/transition'
+
 $: cart = $KQL_Cart.data?.cart || {}
+
+const width = tweened(0, {
+	duration: 1000,
+	easing: elasticOut
+})
+
+onMount(() => {
+	// width.set(150)
+})
+
+const cartTotal = spring(0, {
+	stiffness: 0.1,
+	damping: 0.08
+})
+
+$: cart.qty > 0 ? width.set(100) : width.set(0)
+
+$: cart.qty && cartTotal.set(cart.total)
 </script>
 
-<div>
+<div class="">
 	{#if cart.qty != 0}
-		<footer class="footer">
+		<footer class=" 	fixed left-0 bottom-0 text-center " style="width:{$width}%">
 			<nav class="navbar header has-shadow is-primary">
 				<div class="headeralign1 shadow" style="color:white;">
-					<div style="padding-left: 13px;">
+					<div
+						style="padding-left: 13px;"
+						in:fly="{{ y: -20, duration: 800, delay: 0 }}"
+						out:fly="{{ y: 20, duration: 400, delay: 0 }}">
 						{#if $KQL_Cart.isFetching}
 							<span>Please wait...</span>
 						{:else}
 							<span>
-								{cart.qty} item{#if cart.qty > 1}s{/if} | {currency(cart.total)}
+								{cart.qty} item{#if cart.qty > 1}s{/if} | {currency($cartTotal.toFixed(0))}
 							</span>
 						{/if}
 					</div>

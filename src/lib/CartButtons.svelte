@@ -4,6 +4,11 @@ import { KQL_AddToCart, KQL_Cart } from './graphql/_kitql/graphqlStores'
 import { Cart } from './graphql/_kitql/graphqlTypes'
 import PrimaryButton from './ui/PrimaryButton.svelte'
 import { store, toast } from './util'
+import { fly } from 'svelte/transition'
+import { tweened } from 'svelte/motion'
+import { elasticOut } from 'svelte/easing'
+
+let visible = true
 
 export let product, cart
 let loading = false
@@ -73,6 +78,7 @@ async function addToCart({ pid, vid, options, qty }) {
 		<!-- Minus Button -->
 
 		<button
+			in:fly="{{ x: 10, duration: 1000, delay: 50 }}"
 			type="button"
 			class="flex-shrink-0 rounded-full bg-primary-50 p-2 text-gray-800 transition duration-500 hover:bg-primary-500 hover:text-white focus:outline-none"
 			on:click="{() =>
@@ -114,6 +120,7 @@ async function addToCart({ pid, vid, options, qty }) {
 		<!-- Plus Button -->
 
 		<button
+			in:fly="{{ x: -10, duration: 1000, delay: 50 }}"
 			type="button"
 			class="flex-shrink-0 rounded-full bg-primary-50 p-2 text-gray-800 transition duration-500 hover:bg-primary-500 hover:text-white focus:outline-none"
 			on:click="{() =>
