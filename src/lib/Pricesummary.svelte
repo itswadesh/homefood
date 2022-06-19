@@ -30,11 +30,6 @@ img {
 .navbar-item img {
 	max-height: 1.75rem;
 }
-a {
-	color: #3273dc;
-	cursor: pointer;
-	text-decoration: none;
-}
 .navbar-menu {
 	background-color: #fff;
 	box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
@@ -170,11 +165,13 @@ function submit() {
 	{#if $KQL_Cart.data?.cart.qty > 0}
 		<footer class="footer">
 			<nav class="navbar header has-shadow is-primary text-white">
-				<div class="headeralign1 shadow" style="color:white;">
+				<div
+					class="headeralign1 flex flex-col items-center justify-center shadow "
+					style="color:white;">
 					{#if nextpage}
 						<a
 							href="{nextpage}"
-							class="mt-5 block w-full rounded-md  text-center font-semibold uppercase tracking-wider text-white shadow-md transition duration-300 ">
+							class="mt-5 block h-full w-full flex-1 rounded-md text-center font-semibold uppercase tracking-wider text-white shadow-md transition duration-300 ">
 							{text}
 						</a>
 					{:else}

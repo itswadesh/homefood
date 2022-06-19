@@ -680,6 +680,7 @@ export type Currency = {
   __typename?: 'Currency';
   active?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['String']>;
+  decimalDigits?: Maybe<Scalars['Int']>;
   decimalMark?: Maybe<Scalars['String']>;
   disambiguateSymbol?: Maybe<Scalars['String']>;
   htmlEntity?: Maybe<Scalars['String']>;
@@ -2551,6 +2552,7 @@ export type MutationSaveCouponArgs = {
 
 export type MutationSaveCurrencyArgs = {
   active?: InputMaybe<Scalars['Boolean']>;
+  decimalDigits?: InputMaybe<Scalars['Int']>;
   decimalMark?: InputMaybe<Scalars['String']>;
   disambiguateSymbol?: InputMaybe<Scalars['String']>;
   htmlEntity?: InputMaybe<Scalars['String']>;
@@ -3237,6 +3239,7 @@ export type MutationSaveStoreCurrencyArgs = {
   conversionMode?: InputMaybe<Scalars['String']>;
   conversionRate?: InputMaybe<Scalars['Float']>;
   currency?: InputMaybe<Scalars['ID']>;
+  decimalDigits?: InputMaybe<Scalars['Int']>;
   default?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['String'];
 };
@@ -3254,10 +3257,12 @@ export type MutationSaveSubscriptionArgs = {
   abandonnedCartRecovery?: InputMaybe<Scalars['Boolean']>;
   active?: InputMaybe<Scalars['Boolean']>;
   annualPrice?: InputMaybe<Scalars['Float']>;
+  appointments?: InputMaybe<Scalars['Boolean']>;
   callMeLimit?: InputMaybe<Scalars['Int']>;
   cashfreePlanId?: InputMaybe<Scalars['String']>;
   chatSupport?: InputMaybe<Scalars['Boolean']>;
   customDomain?: InputMaybe<Scalars['Boolean']>;
+  delivery?: InputMaybe<Scalars['Boolean']>;
   description?: InputMaybe<Scalars['String']>;
   discountCoupons?: InputMaybe<Scalars['Boolean']>;
   emailSupport?: InputMaybe<Scalars['Boolean']>;
@@ -3271,6 +3276,7 @@ export type MutationSaveSubscriptionArgs = {
   name?: InputMaybe<Scalars['String']>;
   onlineStore?: InputMaybe<Scalars['Boolean']>;
   photosAllowed?: InputMaybe<Scalars['Int']>;
+  pickup?: InputMaybe<Scalars['Boolean']>;
   premiumSupport?: InputMaybe<Scalars['Boolean']>;
   productImportExport?: InputMaybe<Scalars['Boolean']>;
   productsAllowed?: InputMaybe<Scalars['Int']>;
@@ -3278,6 +3284,7 @@ export type MutationSaveSubscriptionArgs = {
   salesChannels?: InputMaybe<Scalars['Boolean']>;
   seoOptions?: InputMaybe<Scalars['Boolean']>;
   stripePlanId?: InputMaybe<Scalars['String']>;
+  tableBooking?: InputMaybe<Scalars['Boolean']>;
   title?: InputMaybe<Scalars['String']>;
   transactionFees?: InputMaybe<Scalars['Float']>;
   transactionFeesType?: InputMaybe<Scalars['String']>;
@@ -4402,6 +4409,7 @@ export type OneStoreCurrency = {
   conversionRate?: Maybe<Scalars['Float']>;
   createdAt?: Maybe<Scalars['String']>;
   currency?: Maybe<Scalars['ID']>;
+  decimalDigits?: Maybe<Scalars['Int']>;
   default?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['ID']>;
   isoCode?: Maybe<Scalars['String']>;
@@ -4455,11 +4463,13 @@ export type OneSubscription = {
   abandonnedCartRecovery?: Maybe<Scalars['Boolean']>;
   active?: Maybe<Scalars['Boolean']>;
   annualPrice?: Maybe<Scalars['Float']>;
+  appointments?: Maybe<Scalars['Boolean']>;
   callMeLimit?: Maybe<Scalars['Int']>;
   cashfreePlanId?: Maybe<Scalars['String']>;
   chatSupport?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['String']>;
   customDomain?: Maybe<Scalars['Boolean']>;
+  delivery?: Maybe<Scalars['Boolean']>;
   description?: Maybe<Scalars['String']>;
   discountCoupons?: Maybe<Scalars['Boolean']>;
   emailSupport?: Maybe<Scalars['Boolean']>;
@@ -4474,6 +4484,7 @@ export type OneSubscription = {
   name?: Maybe<Scalars['String']>;
   onlineStore?: Maybe<Scalars['Boolean']>;
   photosAllowed?: Maybe<Scalars['Int']>;
+  pickup?: Maybe<Scalars['Boolean']>;
   premiumSupport?: Maybe<Scalars['Boolean']>;
   productImportExport?: Maybe<Scalars['Boolean']>;
   productsAllowed?: Maybe<Scalars['Int']>;
@@ -4481,6 +4492,7 @@ export type OneSubscription = {
   salesChannels?: Maybe<Scalars['Boolean']>;
   seoOptions?: Maybe<Scalars['Boolean']>;
   stripePlanId?: Maybe<Scalars['String']>;
+  tableBooking?: Maybe<Scalars['Boolean']>;
   title?: Maybe<Scalars['String']>;
   transactionFees?: Maybe<Scalars['Float']>;
   transactionFeesType?: Maybe<Scalars['String']>;
@@ -5377,6 +5389,7 @@ export type Query = {
   myAddresses?: Maybe<AddressRes>;
   myAppointments?: Maybe<AppointmentRes>;
   myChannels?: Maybe<ChannelRes>;
+  myCurrentSubscriptionDetail?: Maybe<Subscribe>;
   myCustomers?: Maybe<UserRes>;
   myDeals?: Maybe<DealRes>;
   myOrderItems?: Maybe<OrderItemRes>;
@@ -7090,6 +7103,7 @@ export type QueryStoreVendorsArgs = {
 
 export type QueryStoresArgs = {
   active?: InputMaybe<Scalars['Boolean']>;
+  featured?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<Scalars['Int']>;
   page?: InputMaybe<Scalars['Int']>;
   search?: InputMaybe<Scalars['String']>;
@@ -7421,11 +7435,13 @@ export type SaasSubscription = {
   abandonnedCartRecovery?: Maybe<Scalars['Boolean']>;
   active?: Maybe<Scalars['Boolean']>;
   annualPrice?: Maybe<Scalars['Float']>;
+  appointments?: Maybe<Scalars['Boolean']>;
   callMeLimit?: Maybe<Scalars['Int']>;
   cashfreePlanId?: Maybe<Scalars['String']>;
   chatSupport?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['String']>;
   customDomain?: Maybe<Scalars['Boolean']>;
+  delivery?: Maybe<Scalars['Boolean']>;
   description?: Maybe<Scalars['String']>;
   discountCoupons?: Maybe<Scalars['Boolean']>;
   emailSupport?: Maybe<Scalars['Boolean']>;
@@ -7440,6 +7456,7 @@ export type SaasSubscription = {
   name?: Maybe<Scalars['String']>;
   onlineStore?: Maybe<Scalars['Boolean']>;
   photosAllowed?: Maybe<Scalars['Int']>;
+  pickup?: Maybe<Scalars['Boolean']>;
   premiumSupport?: Maybe<Scalars['Boolean']>;
   productImportExport?: Maybe<Scalars['Boolean']>;
   productsAllowed?: Maybe<Scalars['Int']>;
@@ -7447,6 +7464,7 @@ export type SaasSubscription = {
   salesChannels?: Maybe<Scalars['Boolean']>;
   seoOptions?: Maybe<Scalars['Boolean']>;
   stripePlanId?: Maybe<Scalars['String']>;
+  tableBooking?: Maybe<Scalars['Boolean']>;
   title?: Maybe<Scalars['String']>;
   transactionFees?: Maybe<Scalars['Float']>;
   transactionFeesType?: Maybe<Scalars['String']>;
@@ -7939,6 +7957,7 @@ export type StoreCurrency = {
   conversionRate?: Maybe<Scalars['Float']>;
   createdAt?: Maybe<Scalars['String']>;
   currency?: Maybe<Currency>;
+  decimalDigits?: Maybe<Scalars['Int']>;
   default?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['ID']>;
   isoCode?: Maybe<Scalars['String']>;

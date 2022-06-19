@@ -64,7 +64,7 @@ const user = getUser()
 	<!-- Page transition commented because it was not removing the layout from the login page after navigating to my/index page -->
 	<!-- <PageTransitions refresh="{page?.path}"> -->
 	<div class="minimum-width relative bg-white font-sans antialiased">
-		{#if $navigating}
+		<!-- {#if $navigating}
 			<div class="frosted absolute inset-0 z-50 flex min-h-screen items-center justify-center">
 				<div class="h-28 w-28">
 					<svg
@@ -119,7 +119,7 @@ const user = getUser()
 					</svg>
 				</div>
 			</div>
-		{/if}
+		{/if} -->
 
 		<div class="{$navigating ? 'h-screen overflow-hidden' : ''}">
 			<section
