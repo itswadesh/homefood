@@ -19,7 +19,7 @@ export async function load({ url, params, fetch, session, context }) {
 		// let res = await fetch(uri.toString(), { method: 'get' })
 		// if (res.ok) {
 		// 	let store = await res.json()
-		const storeOne = (await KQL_StoreOne.query({ variables: { domain } })).data.storeOne
+		const storeOne = (await KQL_StoreOne.query({ fetch, variables: { domain } })).data.storeOne
 		const { id, email, address, phone, websiteName, websiteLegalName } = storeOne
 		coookies.set(
 			'store',
