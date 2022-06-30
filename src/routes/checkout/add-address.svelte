@@ -10,7 +10,6 @@ export async function load({ url, params, fetch, session, context }) {
 			await KQL_Address.query({ fetch, variables: { id: addressId }, settings: { cacheMs: 0 } })
 		).data?.address
 	}
-
 	return { props: { err, ads } }
 }
 </script>
@@ -30,12 +29,15 @@ import { goto } from '$app/navigation'
 import { onMount } from 'svelte'
 import { store, toast } from '$lib/util'
 import AutoComplete from 'simple-svelte-autocomplete'
+import Select from 'svelte-select'
+import { stringify } from 'postcss'
 
 $: ads = $KQL_Address.data?.address || {}
 let err,
 	loading = false,
 	formChanged = false,
-	selectedState = {}
+	selectedState = {},
+	adsCountry = 'IN'
 
 async function save(ads) {
 	const id = ads.id || 'new'
@@ -84,8 +86,16 @@ onMount(async () => {
 	await KQL_StoreCountries.query({ variables: { store: store?.id, page: 0, limit: 300 } })
 	// selectedCountry = countries[0]
 	// await KQL_Cities.query({ variables: { limit: 300, page: 0, country: ads.country } })
-	await KQL_States.query({ variables: { limit: 300, page: 0, countryCode: ads?.country } })
+	await KQL_States.query({
+		variables: { limit: 300, page: 0, countryCode: ads?.country?.code || ads?.country }
+	})
 	selectedState = { name: ads?.state }
+	const adsCountryA = $KQL_StoreCountries.data?.storeCountries?.data.filter(
+		(c) => c.code === ads.country
+	)
+	if (adsCountryA) {
+		adsCountry = adsCountryA[0]
+	}
 })
 
 async function onCountryChange() {
@@ -94,7 +104,8 @@ async function onCountryChange() {
 	// 	variables: { limit: 300, page: 0, country: ads.country },
 	// 	settings: { policy: 'network-only' }
 	// })
-	if (ads?.country) {
+	if (adsCountry) {
+		ads.country = adsCountry.code ? adsCountry.code : adsCountry
 		formChanged = true
 		await KQL_States.query({
 			variables: { limit: 300, page: 0, countryCode: ads.country },
@@ -108,12 +119,12 @@ const seoProps = {
 	metadescription: 'Add Address '
 }
 
-$: allCountries = $KQL_StoreCountries.data?.storeCountries?.data
+$: allCountries = $KQL_StoreCountries.data?.storeCountries
 $: allStates = $KQL_States.data?.states?.data
 let stateName = ads?.state
-function stateChanged(state) {
-	console.log('state changed', state)
-	// ads.state = state.name
+function stateChanged({ detail }) {
+	console.log('state changed', detail)
+	ads.state = detail.name
 	// save({ ...ads, state: state.name })
 }
 </script>
@@ -200,13 +211,22 @@ function stateChanged(state) {
 						</select>
 					</div>
 				{/if} -->
-
 				<div>
 					<h6 class="mb-2 font-semibold">Country</h6>
-					<select
+					{#if $KQL_StoreCountries.isFetching}
+						Loading Countries...
+					{:else if allCountries?.count}
+						<Select
+							items="{allCountries?.data}"
+							bind:value="{adsCountry}"
+							optionIdentifier="code"
+							labelIdentifier="name"
+							on:select="{() => onCountryChange()}" />
+					{/if}
+					<!-- <select
 						class="w-full rounded-md border border-gray-300 bg-gray-50 p-2 text-sm placeholder-gray-400  transition duration-300 placeholder:font-normal hover:bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
 						bind:value="{ads.country}"
-						on:change="{() => onCountryChange()}">
+						>
 						<option value="" selected>-- Select a Country --</option>
 						{#if allCountries?.length}
 							{#each allCountries as c}
@@ -217,13 +237,19 @@ function stateChanged(state) {
 								{/if}
 							{/each}
 						{/if}
-					</select>
+					</select> -->
 					<!-- <Textbox type="text" bind:value="{ads.country}" placeholder="Enter Country" required /> -->
 				</div>
 				{#if ads?.country}
 					<div>
 						<h6 class="mb-2 font-semibold">State</h6>
-						<AutoComplete
+						<Select
+							items="{allStates}"
+							bind:value="{selectedState}"
+							optionIdentifier="name"
+							labelIdentifier="name"
+							on:select="{stateChanged}" />
+						<!-- <AutoComplete
 							noInputStyles="{true}"
 							className="w-full placeholder:font-normal placeholder-gray-400"
 							inputClassName="text-sm bg-gray-50 w-full hover:bg-white focus:ring-1 focus:ring-primary-500 rounded-md border border-gray-300 transition duration-300 focus:outline-none"
@@ -232,7 +258,7 @@ function stateChanged(state) {
 							bind:value="{stateName}"
 							onChange="{stateChanged}"
 							labelFieldName="name"
-							valueFieldName="name" />
+							valueFieldName="name" /> -->
 						<!-- <select
 							class="w-full rounded-md border border-gray-300 bg-gray-50 p-2 text-sm placeholder-gray-400  transition duration-300 placeholder:font-normal hover:bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
 							bind:value="{ads.state}"
