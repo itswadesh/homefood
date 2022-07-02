@@ -35,7 +35,6 @@ export async function load({ url, params, fetch, session, context, cookie }) {
 
 <script>
 import Hero from '$lib/Hero.svelte'
-// import SEO from '$lib/components/SEO/index.svelte'
 import { KQL_Cart, KQL_Home, KQL_Products } from '$lib/graphql/_kitql/graphqlStores'
 import { onMount } from 'svelte'
 import ProductCard from '$lib/components/_ProductCard.svelte'
