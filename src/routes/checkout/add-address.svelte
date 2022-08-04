@@ -16,23 +16,24 @@ export async function load({ url, params, fetch, session, context }) {
 
 <script>
 import GradiantButton from '$lib/ui/GradiantButton.svelte'
+import SEO from '$lib/components/SEO/index.svelte'
 import Textbox from '$lib/ui/Textbox.svelte'
 import BackButton from '$lib/ui/BackButton.svelte'
+import Error from '$lib/components/Error.svelte'
 import {
 	KQL_Address,
 	KQL_SaveAddress,
 	KQL_States,
 	KQL_StoreCountries
 } from '$lib/graphql/_kitql/graphqlStores'
-import Error from '$lib/Error.svelte'
 import { goto } from '$app/navigation'
-import { onMount } from 'svelte'
 import { store, toast } from '$lib/util'
-import AutoComplete from 'simple-svelte-autocomplete'
+import PrimaryButton from '$lib/ui/PrimaryButton.svelte'
 import Select from 'svelte-select'
-import { stringify } from 'postcss'
+import { onMount } from 'svelte'
 
-$: ads = $KQL_Address.data?.address || {}
+// $: ads = $KQL_Address.data?.address || {}
+export let ads = {}
 let err,
 	loading = false,
 	formChanged = false,
@@ -74,7 +75,7 @@ async function save(ads) {
 		})
 		if (errors) {
 			err = errors[0].message
-			toast(err, 'error')
+			// toast(err, 'error')
 		} else goto(`/checkout/address`)
 	} catch (e) {
 		err = e
@@ -128,6 +129,8 @@ function stateChanged({ detail }) {
 	// save({ ...ads, state: state.name })
 }
 </script>
+
+<SEO {...seoProps} />
 
 {#if ads}
 	<div class="container mx-auto max-w-4xl p-3 py-5 sm:p-10">
