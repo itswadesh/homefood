@@ -45,7 +45,7 @@ function submit() {
 
 		<div class="mt-2 flex items-center justify-between font-medium">
 			<h4>Shipping fee</h4>
-			<h4>{$KQL_Cart?.data?.cart.shipping.charge}</h4>
+			<h4>FREE</h4>
 		</div>
 
 		<!-- <p class="mt-1 text-xs tracking-wider text-gray-400 d">
